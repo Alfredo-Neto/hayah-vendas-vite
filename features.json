@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "project": "hayah-vendas-vite",
+  "sourceOfTruth": {
+    "agentGuide": "AGENTS.md",
+    "glossary": "CONTEXT.md",
+    "minimalModel": "docs/modelo-minimo.md",
+    "adrs": "docs/adr/",
+    "progress": "progress.md"
+  },
+  "features": [
+    {
+      "id": "0001",
+      "name": "Initial Vite Supabase scaffold",
+      "status": "done",
+      "commit": "c149b97"
+    },
+    {
+      "id": "0002",
+      "name": "Minimal domain model documentation",
+      "status": "done",
+      "commit": "650b708"
+    },
+    {
+      "id": "0003",
+      "name": "Igreja Local creation flow",
+      "status": "done",
+      "commit": "c830fb0"
+    },
+    {
+      "id": "0004",
+      "name": "shadcn/ui foundation",
+      "status": "done",
+      "commit": "7213365"
+    },
+    {
+      "id": "0005",
+      "name": "Email/password auth",
+      "status": "in-progress",
+      "commit": null
+    }
+  ]
+}
