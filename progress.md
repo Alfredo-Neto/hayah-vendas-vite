@@ -2,7 +2,7 @@
 
 ## Current Direction
 
-Build Hayah Vendas as a professional but lean operational app using React, Vite, Supabase, TanStack Query, React Router, and shadcn/ui.
+Build Hayah Vendas as a professional but lean operational app using React, Vite, Supabase, TanStack Router, TanStack Query, React Hook Form, Zod, and shadcn/ui.
 
 The first delivery path is the tracer bullet:
 
@@ -28,6 +28,8 @@ The first delivery path is the tracer bullet:
 - shadcn/ui foundation added.
 - Igreja Local creation flow exists in TypeScript using Supabase direct calls.
 - `/auth` uses email/password sign-up and sign-in through Supabase Auth.
+- App navigation uses TanStack Router.
+- `/auth` form uses React Hook Form and Zod validation.
 
 ## In Progress
 

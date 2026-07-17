@@ -38,6 +38,12 @@
       "name": "Email/password auth",
       "status": "done",
       "commit": "cffddf7"
+    },
+    {
+      "id": "0006",
+      "name": "Professional routing and form foundation",
+      "status": "done",
+      "commit": null
     }
   ]
 }

@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from 'react-router';
+import { Link, Outlet, useRouterState } from '@tanstack/react-router';
 import { cn } from '@/lib/utils';
 
 const navItems = [
@@ -12,22 +12,24 @@ const navItems = [
 ];
 
 export function AppLayout() {
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+
   return (
     <div className="min-h-screen bg-background lg:grid lg:grid-cols-[16rem_1fr]">
       <aside className="border-b bg-card lg:min-h-screen lg:border-r lg:border-b-0">
         <div className="px-6 py-5 text-lg font-semibold tracking-tight">Hayah Vendas</div>
         <nav className="flex gap-2 overflow-x-auto px-4 pb-4 lg:grid lg:overflow-visible">
           {navItems.map((item) => (
-            <NavLink
+            <Link
               key={item.href}
               to={item.href}
-              className={({ isActive }) => cn(
+              className={cn(
                 'shrink-0 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground',
-                isActive && 'bg-accent text-accent-foreground',
+                pathname === item.href && 'bg-accent text-accent-foreground',
               )}
             >
               {item.label}
-            </NavLink>
+            </Link>
           ))}
         </nav>
       </aside>

@@ -12,13 +12,15 @@ The previous exploration with Next, Clerk, and a SaaS boilerplate added too much
 
 ## Decision
 
-Use React, Vite, TypeScript, Supabase, TanStack Query, React Router, and shadcn/ui.
+Use React, Vite, TypeScript, Supabase, TanStack Router, TanStack Query, React Hook Form, Zod, and shadcn/ui.
 
 Supabase provides Auth, Postgres, constraints, RLS, migrations, and future Edge Functions. React/Vite owns the interactive product UI.
 
 ## Consequences
 
 Most day-to-day product work happens in TypeScript and React.
+
+TanStack Router owns app navigation. TanStack Query owns remote data state. React Hook Form and Zod own form state and validation.
 
 The database still protects core data integrity through constraints and RLS. RPC or Edge Functions are reserved for flows that need strong transactions, secrets, or server-side integration.
 

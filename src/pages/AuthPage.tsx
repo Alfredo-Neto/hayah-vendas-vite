@@ -1,4 +1,8 @@
-import { FormEvent, useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigate } from '@tanstack/react-router';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,21 +12,37 @@ import { useSignInMutation, useSignUpMutation } from '../features/auth/authMutat
 
 type AuthMode = 'sign-up' | 'sign-in';
 
+const authFormSchema = z.object({
+  email: z.email('Informe um email válido.'),
+  password: z.string().min(6, 'A senha precisa ter pelo menos 6 caracteres.'),
+});
+
+type AuthFormValues = z.infer<typeof authFormSchema>;
+
 export function AuthPage() {
   const [mode, setMode] = useState<AuthMode>('sign-up');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
   const signIn = useSignInMutation();
   const signUp = useSignUpMutation();
   const activeMutation = mode === 'sign-up' ? signUp : signIn;
+  const form = useForm<AuthFormValues>({
+    resolver: zodResolver(authFormSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
   const title = mode === 'sign-up' ? 'Criar acesso' : 'Entrar';
   const description = mode === 'sign-up'
     ? 'Crie seu acesso para cadastrar a Igreja Local e virar Coordenador inicial.'
     : 'Entre com email e senha para continuar.';
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    activeMutation.mutate({ email, password });
+  function handleSubmit(values: AuthFormValues) {
+    activeMutation.mutate(values, {
+      onSuccess: () => {
+        void navigate({ to: '/igreja-local' });
+      },
+    });
   }
 
   return (
@@ -41,14 +61,16 @@ export function AuthPage() {
             Entrar
           </Button>
         </div>
-        <form className="space-y-4" onSubmit={handleSubmit}>
+        <form className="space-y-4" onSubmit={form.handleSubmit(handleSubmit)}>
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
-            <Input id="email" value={email} onChange={(event) => setEmail(event.target.value)} type="email" required />
+            <Input id="email" type="email" {...form.register('email')} />
+            {form.formState.errors.email ? <p className="text-sm text-destructive">{form.formState.errors.email.message}</p> : null}
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">Senha</Label>
-            <Input id="password" value={password} onChange={(event) => setPassword(event.target.value)} type="password" required minLength={6} />
+            <Input id="password" type="password" {...form.register('password')} />
+            {form.formState.errors.password ? <p className="text-sm text-destructive">{form.formState.errors.password.message}</p> : null}
           </div>
           <Button type="submit" disabled={activeMutation.isPending}>
             {activeMutation.isPending ? 'Salvando...' : title}
