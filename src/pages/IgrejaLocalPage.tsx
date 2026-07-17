@@ -2,9 +2,10 @@ import { FormEvent, useState } from 'react';
 import { Link } from '@tanstack/react-router';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { PageCard } from '@/components/PageCard';
 import { useSessionQuery } from '../features/auth/authQueries';
 import { useCreateIgrejaLocalMutation } from '../features/igreja-local/igrejaLocalMutations';
 
@@ -19,31 +20,35 @@ export function IgrejaLocalPage() {
   }
 
   if (session.isLoading) {
-    return <Card className="max-w-xl"><CardContent>Carregando sessão...</CardContent></Card>;
+    return (
+      <PageCard
+        eyebrow="Coordenador"
+        title="Igreja Local"
+        description="Carregando sessão..."
+      />
+    );
   }
 
   if (!session.data) {
     return (
-      <Card className="max-w-xl">
-        <CardHeader>
-          <p className="text-sm font-medium text-muted-foreground">Coordenador</p>
-          <CardTitle className="text-3xl">Igreja Local</CardTitle>
-          <CardDescription>Entre com seu email antes de criar uma Igreja Local.</CardDescription>
-        </CardHeader>
+      <PageCard
+        eyebrow="Coordenador"
+        title="Igreja Local"
+        description="Entre com seu email antes de criar uma Igreja Local."
+      >
         <CardContent>
           <Button asChild><Link to="/auth">Entrar</Link></Button>
         </CardContent>
-      </Card>
+      </PageCard>
     );
   }
 
   return (
-    <Card className="max-w-xl">
-      <CardHeader>
-        <p className="text-sm font-medium text-muted-foreground">Coordenador</p>
-        <CardTitle className="text-3xl">Igreja Local</CardTitle>
-        <CardDescription>Crie a Igreja Local que vai organizar Edições, Equipes, Convites e Vendas.</CardDescription>
-      </CardHeader>
+    <PageCard
+      eyebrow="Coordenador"
+      title="Igreja Local"
+      description="Crie a Igreja Local que vai organizar Edições, Equipes, Convites e Vendas."
+    >
       <CardContent className="space-y-4">
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="space-y-2">
@@ -51,7 +56,7 @@ export function IgrejaLocalPage() {
             <Input id="nome-igreja" value={nome} onChange={(event) => setNome(event.target.value)} required minLength={3} />
           </div>
           <Button type="submit" disabled={createIgreja.isPending}>
-          {createIgreja.isPending ? 'Criando...' : 'Criar Igreja Local'}
+            {createIgreja.isPending ? 'Criando...' : 'Criar Igreja Local'}
           </Button>
         </form>
         {createIgreja.isSuccess ? (
@@ -59,6 +64,6 @@ export function IgrejaLocalPage() {
         ) : null}
         {createIgreja.isError ? <Alert variant="destructive"><AlertDescription>{createIgreja.error.message}</AlertDescription></Alert> : null}
       </CardContent>
-    </Card>
+    </PageCard>
   );
 }

@@ -10,8 +10,9 @@ Este documento registra o modelo minimo para reconstruir o produto com React, Vi
 4. Coordenador cria uma Equipe.
 5. Coordenador cria um Convite de Lider para a Equipe.
 6. Lider aceita o Convite.
-7. Lider registra uma Venda.
-8. Coordenador ve um ranking simples da Edicao por Equipe.
+7. Lider envia o Fechamento da Equipe.
+8. Coordenador valida o Fechamento.
+9. Coordenador ve um Ranking da Edicao por Equipe.
 
 ## Vocabulario Canonico
 
@@ -22,7 +23,9 @@ Este documento registra o modelo minimo para reconstruir o produto com React, Vi
 - Equipe: grupo dentro de uma Edicao, sob responsabilidade de um Lider.
 - Lider: Usuario atribuido a uma Equipe dentro de uma Edicao.
 - Convite: permissao para um Usuario entrar em uma Igreja Local e assumir um papel/atribuicao.
-- Venda: resultado individual registrado por Lider ou Membro para uma Equipe em uma Edicao.
+- Fechamento da Equipe: comprovacao de valor ja repassado pelo Lider para a Igreja Local.
+- Comprovante de Transferencia: evidencia anexada pelo Lider para o Coordenador conferir o repasse.
+- Ranking: comparacao das Equipes usando apenas valores repassados em Fechamentos validados pelo Coordenador.
 
 ## Tabelas Da Primeira Bala
 
@@ -142,25 +145,39 @@ Regras:
 
 - Na primeira bala, um Lider pertence a exatamente uma Equipe dentro da Edicao.
 
-### vendas
+### fechamentos_equipe
 
-Representa uma Venda registrada para uma Equipe em uma Edicao.
+Representa o valor ja transferido pelo Lider para a Igreja Local, com comprovante para validacao do Coordenador.
 
 - `id`.
 - `igreja_local_id`.
 - `edicao_id`.
 - `equipe_id`.
-- `seller_usuario_id`.
-- `produto`.
-- `quantidade`.
-- `receita`.
-- `custo`.
+- `enviado_por_usuario_id`.
+- `valor_repassado`.
+- `comprovante_transferencia_path`.
+- `observacao`.
+- `status`: `enviado`, `validado`, `rejeitado`.
+- `validado_por_usuario_id`.
+- `validado_em`.
 - `criado_em`.
 
 Regras:
 
-- Lider registra Venda apenas para sua Equipe.
-- Ranking simples da primeira bala soma Vendas por Equipe.
+- Lider envia Fechamento apenas para sua Equipe.
+- Fechamento so deve ser enviado depois que a transferencia foi feita.
+- `valor_repassado` deve ser maior que zero.
+- `comprovante_transferencia_path` e obrigatorio para enviar o Fechamento.
+- Coordenador valida ou rejeita o Fechamento conferindo o comprovante e o recebimento real.
+- Ranking soma `valor_repassado` apenas de Fechamentos com `status = validado`.
+
+### vendas
+
+Representa uma Venda individual de Lider ou Membro. Fica fora da primeira bala enquanto o fluxo oficial usa valor repassado validado.
+
+Regras futuras:
+
+- Venda, faturamento, custos e valor reinvestido podem explicar a composicao do Fechamento, mas nao entram no Ranking enquanto nao forem parte oficial do fluxo validado.
 
 ## Operacoes Criticas
 

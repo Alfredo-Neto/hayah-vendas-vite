@@ -44,6 +44,12 @@
       "name": "Professional routing and form foundation",
       "status": "done",
       "commit": "b0289ab"
+    },
+    {
+      "id": "0007",
+      "name": "Validated fechamento ranking model",
+      "status": "planned",
+      "commit": null
     }
   ]
 }

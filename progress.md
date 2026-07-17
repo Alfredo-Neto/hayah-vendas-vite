@@ -12,8 +12,9 @@ The first delivery path is the tracer bullet:
 4. Coordenador creates Equipe.
 5. Coordenador creates Convite de Lider.
 6. Lider accepts Convite.
-7. Lider registers Venda.
-8. Coordenador sees simple Ranking.
+7. Lider sends Fechamento da Equipe.
+8. Coordenador validates Fechamento da Equipe.
+9. Coordenador sees Ranking from validated Fechamentos.
 
 ## Done
 
@@ -30,10 +31,12 @@ The first delivery path is the tracer bullet:
 - `/auth` uses email/password sign-up and sign-in through Supabase Auth.
 - App navigation uses TanStack Router.
 - `/auth` form uses React Hook Form and Zod validation.
+- Domain direction updated: Ranking should use validated valor repassado with transfer proof, not raw individual Vendas or declared lucro.
 
 ## In Progress
 
 - Test Coordenador + Igreja Local manually.
+- Model Fechamento da Equipe with valor repassado and comprovante de transferencia.
 
 ## Next
 
@@ -41,8 +44,10 @@ The first delivery path is the tracer bullet:
 - Add route protection and logout.
 - Generate Supabase TypeScript types.
 - Add Edicao schema and UI.
+- Add Fechamento da Equipe schema with required transfer proof.
 
 ## Known Tradeoffs
 
 - `createIgrejaLocal` is currently implemented in TypeScript with multiple Supabase calls, not as a transaction/RPC.
 - This is acceptable for learning and speed now, but critical membership/Convite flows may later move to RPC or Edge Functions if consistency risk becomes painful.
+- Venda individual, faturamento, custos, lucro and reinvestimento are intentionally not the Ranking source in the first tracer bullet; they may return later as supporting detail behind a Fechamento.
