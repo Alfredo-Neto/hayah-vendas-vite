@@ -1,14 +1,32 @@
 import { useMutation } from '@tanstack/react-query';
 import { supabase } from '../../lib/supabase';
 
-export function useSignInWithEmailMutation() {
+type EmailPasswordInput = {
+  email: string;
+  password: string;
+};
+
+export function useSignUpMutation() {
   return useMutation({
-    mutationFn: async (email: string) => {
-      const { error } = await supabase.auth.signInWithOtp({
+    mutationFn: async ({ email, password }: EmailPasswordInput) => {
+      const { error } = await supabase.auth.signUp({
         email,
-        options: {
-          emailRedirectTo: `${window.location.origin}/dashboard`,
-        },
+        password,
+      });
+
+      if (error) {
+        throw error;
+      }
+    },
+  });
+}
+
+export function useSignInMutation() {
+  return useMutation({
+    mutationFn: async ({ email, password }: EmailPasswordInput) => {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
       });
 
       if (error) {
