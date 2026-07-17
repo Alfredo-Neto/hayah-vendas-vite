@@ -27,14 +27,14 @@ The first delivery path is the tracer bullet:
 - TanStack Query installed and wired.
 - shadcn/ui foundation added.
 - Igreja Local creation flow exists in TypeScript using Supabase direct calls.
+- `/auth` uses email/password sign-up and sign-in through Supabase Auth.
 
 ## In Progress
 
-- Replace magic-link auth with email/password auth in a mentored, step-by-step way.
+- Test Coordenador + Igreja Local manually.
 
 ## Next
 
-- Finish `/auth` email/password UI.
 - Test Coordenador + Igreja Local manually.
 - Add route protection and logout.
 - Generate Supabase TypeScript types.
