@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigate } from '@tanstack/react-router';
+import { Navigate, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useSignInMutation, useSignUpMutation } from '../features/auth/authMutations';
+import { useSessionQuery } from '../features/auth/authQueries';
 
 type AuthMode = 'sign-up' | 'sign-in';
 
@@ -23,6 +24,7 @@ type AuthFormValues = z.infer<typeof authFormSchema>;
 export function AuthPage() {
   const [mode, setMode] = useState<AuthMode>('sign-up');
   const navigate = useNavigate();
+  const session = useSessionQuery();
   const signIn = useSignInMutation();
   const signUp = useSignUpMutation();
   const activeMutation = mode === 'sign-up' ? signUp : signIn;
@@ -41,9 +43,30 @@ export function AuthPage() {
   function handleSubmit(values: AuthFormValues) {
     activeMutation.mutate(values, {
       onSuccess: () => {
-        void navigate({ to: '/igreja-local' });
+        void navigate({ to: '/igreja-local', replace: true });
       },
     });
+  }
+
+  if (session.isLoading && !session.data) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center bg-background px-6 py-12">
+        <div className="mb-8">
+          <HayahBrand />
+        </div>
+        <Card className="hayah-card w-full max-w-md border shadow-none">
+          <CardHeader>
+            <p className="text-xs font-semibold tracking-widest text-primary uppercase">Autenticação</p>
+            <CardTitle className="text-3xl font-bold tracking-tight">Carregando sessão</CardTitle>
+            <CardDescription>Verificando seu acesso...</CardDescription>
+          </CardHeader>
+        </Card>
+      </div>
+    );
+  }
+
+  if (session.data) {
+    return <Navigate to="/igreja-local" replace />;
   }
 
   return (

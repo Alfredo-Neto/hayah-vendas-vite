@@ -17,3 +17,10 @@ Working rules:
 - Use shadcn/ui components for application surfaces when practical.
 - Do not introduce Next, Clerk, or a heavy SaaS boilerplate without a new ADR.
 - Keep docs concise; add details in `docs/` instead of growing this file.
+
+## Maintaining this file
+
+Keep this file for knowledge useful to almost every future agent session in this project.
+Do not repeat what the codebase already shows; point to the authoritative file or command instead.
+Prefer rewriting or pruning existing entries over appending new ones.
+When updating this file, preserve this bar for all agents and keep entries concise.
