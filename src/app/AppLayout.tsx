@@ -7,6 +7,7 @@ import {
   Mail,
   Menu,
   Receipt,
+  ShieldCheck,
   Trophy,
   Users,
   X,
@@ -21,6 +22,7 @@ import { useSessionQuery } from '@/features/auth/authQueries';
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/admin', label: 'Admin', icon: ShieldCheck },
   { href: '/igreja-local', label: 'Igreja Local', icon: Building2 },
   { href: '/edicoes', label: 'Edições', icon: CalendarDays },
   { href: '/equipes', label: 'Equipes', icon: Users },

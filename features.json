@@ -60,8 +60,9 @@
     {
       "id": "0008",
       "name": "Admin Coordenador and Mentor Convites",
-      "status": "specified",
+      "status": "in_progress",
       "spec": "specs/001-admin-coordenador-mentor-convites/",
+      "slice": "Admin-created/authorized Coordenador implemented; Mentor/Lider Convites remain",
       "commit": null
     }
   ]

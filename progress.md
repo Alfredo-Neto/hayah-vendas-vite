@@ -38,9 +38,9 @@ The first delivery path is the tracer bullet:
 
 ## In Progress
 
-- Test Coordenador + Igreja Local manually.
+- Test Admin-authorized Coordenador + Igreja Local manually after applying the Admin authorization migration in an approved Supabase environment.
 - Model Fechamento da Equipe with valor repassado and comprovante de transferencia.
-- Review Spec Kit artifacts in `specs/001-admin-coordenador-mentor-convites/` before implementation.
+- Continue remaining Spec Kit implementation in `specs/001-admin-coordenador-mentor-convites/` after the first Admin Coordenador slice.
 
 ## Manual Verification: Auth + Igreja Local
 
@@ -57,10 +57,11 @@ Use the existing approved `.env.local` development configuration; do not print i
 
 ## Next
 
-- Test Coordenador + Igreja Local manually.
-- Generate Supabase TypeScript types.
-- Add Edicao schema and UI.
-- Implement the Admin-created/authorized Coordenador, Mentor, and Convites feature from `specs/001-admin-coordenador-mentor-convites/tasks.md`.
+- Apply `supabase/migrations/20260804071000_admin_coordenador_authorization.sql` in an approved Supabase environment and manually validate `/admin` -> `autorizar_coordenador` -> `/igreja-local` -> `criar_igreja_local`.
+- Add an executable Supabase SQL/RLS test harness for Admin Coordenador authorization checks.
+- Generate Supabase TypeScript types from the approved environment after migration application.
+- Add Edicao UI.
+- Implement the remaining Mentor, Lider Convites, Mentor-Equipe assignment, Fechamento, and Ranking work from `specs/001-admin-coordenador-mentor-convites/tasks.md`.
 - Add Fechamento da Equipe schema with required transfer proof.
 
 ## Known Tradeoffs
