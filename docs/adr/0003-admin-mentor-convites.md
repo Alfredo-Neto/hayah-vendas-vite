@@ -30,4 +30,4 @@ The database model and RLS must represent Admin authorization, Mentor Convites, 
 
 The tracer bullet remains intact: Mentors support Equipes and Lideres, while Lider sends Fechamento da Equipe, Coordenador validates, and Ranking remains based on validated Fechamentos.
 
-Implementation should be planned through Spec Kit under `specs/001-admin-coordenador-mentor-convites/` before product code changes.
+Implementation is tracked through Spec Kit under `specs/001-admin-coordenador-mentor-convites/`; keep completed and remaining slice status there.

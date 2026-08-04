@@ -1,8 +1,10 @@
 # Contracts: Role and Convite flows
 
-These are product-flow contracts for future implementation. They are not API commitments yet; workers may implement them with Supabase RPC, direct calls protected by RLS, or Edge Functions when justified by ADR 0001.
+These are product-flow contracts. The Admin authorizes Coordenador and Coordenador creates Igreja Local flows are implemented as Supabase RPCs; remaining flows may use Supabase RPC, direct calls protected by RLS, or Edge Functions when justified by ADR 0001.
 
 ## Admin authorizes Coordenador
+
+Implemented RPC: `autorizar_coordenador(p_email, p_nome)`.
 
 **Actor**: Admin  
 **Input**: Coordenador email and optional display name  
@@ -16,6 +18,8 @@ Rules:
 - Do not store secrets in authorization records.
 
 ## Coordenador creates Igreja Local
+
+Implemented RPC: `criar_igreja_local(p_nome)`.
 
 **Actor**: Active Coordenador  
 **Input**: Igreja Local name  

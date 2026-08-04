@@ -1,8 +1,8 @@
 # Quickstart validation scenarios
 
-These scenarios guide future implementation validation. They do not require starting a local Supabase stack during this documentation task.
+These scenarios guide implementation validation. They do not require starting a local Supabase stack during documentation-only tasks.
 
-## Prerequisites for future implementation workers
+## Prerequisites for implementation workers
 
 - Review `CONTEXT.md`, `docs/modelo-minimo.md`, ADR 0001, ADR 0002, ADR 0003, and this spec directory.
 - Apply migrations in the approved Supabase environment or test harness.
@@ -58,14 +58,14 @@ Documentation-only changes:
 find specs/001-admin-coordenador-mentor-convites -maxdepth 3 -type f -print
 ```
 
-If product or TypeScript files changed in a future implementation:
+If product or TypeScript files changed:
 
 ```bash
 npm run typecheck -- --pretty false
 npm run build
 ```
 
-If Supabase rules changed in a future implementation, also run the repo-approved SQL/RLS verification commands documented by that task.
+If Supabase rules changed, also run the repo-approved SQL/RLS verification commands documented by that task.
 
 ## Current implementation slice validation (Admin -> Coordenador)
 

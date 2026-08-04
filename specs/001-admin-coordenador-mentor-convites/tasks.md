@@ -15,7 +15,7 @@ First Admin-created/authorized Coordenador slice (`fm/hayah-admin-coordenador-im
 
 ## Phase 1: Setup and documentation alignment
 
-**Purpose**: Ensure future implementation starts from accepted domain decisions.
+**Purpose**: Ensure implementation slices stay aligned with accepted domain decisions.
 
 - [ ] T001 [P] Review `CONTEXT.md`, `docs/modelo-minimo.md`, `docs/adr/0003-admin-mentor-convites.md`, `progress.md`, and this spec directory for consistency before product implementation.
 - [ ] T002 [P] Add any missing feature tracker references for implementation work in `features.json` if the branch or issue plan changes.
