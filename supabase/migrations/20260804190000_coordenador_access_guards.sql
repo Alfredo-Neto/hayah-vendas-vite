@@ -42,10 +42,10 @@ begin
   select
     v_is_admin,
     v_is_coordenador_authorized,
-    v_coordenador_igreja_local_id is not null,
-    v_coordenador_igreja_local_id,
+    v_is_coordenador_authorized and v_coordenador_igreja_local_id is not null,
+    case when v_is_coordenador_authorized then v_coordenador_igreja_local_id else null end,
     case
-      when v_coordenador_igreja_local_id is not null then 'coordenador'
+      when v_is_coordenador_authorized and v_coordenador_igreja_local_id is not null then 'coordenador'
       when v_is_coordenador_authorized then 'coordenador_authorized'
       when v_is_admin then 'admin'
       else 'pending_admin_authorization'

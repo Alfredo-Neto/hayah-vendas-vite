@@ -29,6 +29,11 @@ const checks = [
     pass: /create or replace function public\.current_usuario_access\(\)/.test(accessMigration)
       && !/insert into public\.coordenador_authorizations|insert into public\.igreja_local_membros/.test(accessMigration),
   },
+  {
+    name: 'membership alone cannot grant operational Coordenador access',
+    pass: accessMigration.includes('v_is_coordenador_authorized and v_coordenador_igreja_local_id is not null')
+      && accessMigration.includes('case when v_is_coordenador_authorized then v_coordenador_igreja_local_id else null end'),
+  },
 ];
 
 const failed = checks.filter((check) => !check.pass);
