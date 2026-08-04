@@ -66,6 +66,6 @@ Use the existing approved `.env.local` development configuration; do not print i
 
 ## Known Tradeoffs
 
-- `createIgrejaLocal` is currently implemented in TypeScript with multiple Supabase calls, not as a transaction/RPC.
-- This is acceptable for learning and speed now, but critical membership/Convite flows may later move to RPC or Edge Functions if consistency risk becomes painful.
+- `createIgrejaLocal` now calls the `criar_igreja_local` RPC so Igreja Local creation and Coordenador membership stay behind the backend boundary.
+- Future critical membership/Convite flows may also move to RPC or Edge Functions if consistency risk becomes painful.
 - Venda individual, faturamento, custos, lucro and reinvestimento are intentionally not the Ranking source in the first tracer bullet; they may return later as supporting detail behind a Fechamento.
