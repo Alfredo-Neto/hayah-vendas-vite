@@ -50,11 +50,13 @@ specs/001-admin-coordenador-mentor-convites/
 
 ```text
 src/
+├── app/
 ├── components/
 │   └── ui/
+├── features/
 ├── lib/
 │   └── supabase.ts
-├── routes/
+├── pages/
 └── styles.css
 
 supabase/

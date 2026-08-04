@@ -46,7 +46,7 @@
 ### Implementation for User Story 1
 
 - [ ] T014 [US1] Implement Admin authorization data access/RPC wrapper in `src/lib` or a new `src/features/admin/` module, matching the Supabase boundary from T006.
-- [ ] T015 [US1] Add the smallest Admin UI route/component for creating or authorizing Coordenador in `src/routes` and supporting `src/features/admin/` files.
+- [ ] T015 [US1] Add the smallest Admin UI page/component for creating or authorizing Coordenador in `src/pages` and supporting `src/features/admin/` files.
 - [ ] T016 [US1] Gate Igreja Local creation in existing Igreja Local flow so only an Admin-authorized Coordenador can proceed; update the relevant `src/` files.
 - [ ] T017 [US1] Run US1 tests/verification plus `npm run typecheck -- --pretty false` and `npm run build`.
 
@@ -69,8 +69,8 @@
 
 - [ ] T020 [US2] Extend Convite creation data access to support papel `mentor` in `src/features/convites/` or the current Convite module location.
 - [ ] T021 [US2] Extend Convite acceptance data access to create/reuse membership and create Mentor Edicao assignment in `src/features/convites/` or the current Convite module location.
-- [ ] T022 [US2] Add Coordenador UI to create Mentor Convites for an Edicao in `src/routes` and supporting components.
-- [ ] T023 [US2] Add accepted-Mentor landing/context view showing Igreja Local and Edicao membership in `src/routes` or a new Mentor feature module.
+- [ ] T022 [US2] Add Coordenador UI to create Mentor Convites for an Edicao in `src/pages` and supporting components.
+- [ ] T023 [US2] Add accepted-Mentor landing/context view showing Igreja Local and Edicao membership in `src/pages` or a new Mentor feature module.
 - [ ] T024 [US2] Run US2 tests/verification plus `npm run typecheck -- --pretty false` and `npm run build`.
 
 **Checkpoint**: Mentor can enter the existing Igreja Local through Convite.
@@ -92,8 +92,8 @@
 ### Implementation for User Story 3
 
 - [ ] T028 [US3] Implement Mentor-Equipe assignment data access in `src/features/equipes/` or a new `src/features/mentores/` module.
-- [ ] T029 [US3] Add Coordenador UI to assign a Mentor to one or more Equipes in an Edicao in `src/routes` and supporting components.
-- [ ] T030 [US3] Add Mentor operational view for supervised Equipes and Lider relationships in `src/routes` or `src/features/mentores/`.
+- [ ] T029 [US3] Add Coordenador UI to assign a Mentor to one or more Equipes in an Edicao in `src/pages` and supporting components.
+- [ ] T030 [US3] Add Mentor operational view for supervised Equipes and Lider relationships in `src/pages` or `src/features/mentores/`.
 - [ ] T031 [US3] Ensure Fechamento UI/data access hides or rejects Mentor actions while backend tests enforce denial in relevant `src/` and `supabase/` files.
 - [ ] T032 [US3] Run US3 tests/verification plus `npm run typecheck -- --pretty false` and `npm run build`.
 
@@ -115,7 +115,7 @@
 ### Implementation for User Story 4
 
 - [ ] T035 [US4] Extend Lider Convite creation/acceptance data access for compatibility with Mentor-supervised Equipes in `src/features/convites/` or current Convite module location.
-- [ ] T036 [US4] Show Mentor relationship in Lider Equipe context in `src/routes` or relevant Equipe/Lider components.
+- [ ] T036 [US4] Show Mentor relationship in Lider Equipe context in `src/pages` or relevant Equipe/Lider components.
 - [ ] T037 [US4] Preserve existing Lider Fechamento flow and Coordenador validation flow in relevant `src/` and `supabase/` files.
 - [ ] T038 [US4] Run US4 tests/verification plus `npm run typecheck -- --pretty false` and `npm run build`.
 
