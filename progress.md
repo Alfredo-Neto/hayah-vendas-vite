@@ -7,12 +7,12 @@ Build Hayah Vendas as a professional but lean operational app using React, Vite,
 The first delivery path is the tracer bullet:
 
 1. Admin creates or authorizes Coordenador access.
-2. Coordenador chooses country of operation during onboarding.
-3. Coordenador creates Igreja Local within that country scope.
-4. Coordenador creates Edicao.
-5. Coordenador creates Equipe.
-6. Coordenador creates Convites for Mentor and/or Lider.
-7. Mentor or Lider accepts Convite.
+2. Coordenador creates Igreja Local.
+3. Coordenador creates Edicao.
+4. Coordenador creates Equipe.
+5. Coordenador creates Convites for Mentor and/or Lider.
+6. Mentor or Lider accepts Convite.
+7. Mentor accompanies one or more Equipes without consolidating Fechamento details.
 8. Lider sends Fechamento da Equipe.
 9. Coordenador validates Fechamento da Equipe.
 10. Coordenador sees Ranking from validated Fechamentos.
@@ -34,7 +34,7 @@ The first delivery path is the tracer bullet:
 - `/auth` form uses React Hook Form and Zod validation.
 - Authenticated app routes are protected, `/auth` redirects authenticated Usuarios to `/igreja-local`, and logout signs out through Supabase before returning to `/auth`.
 - Domain direction updated: Ranking should use validated valor repassado with transfer proof, not raw individual Vendas or declared lucro.
-- ADR 0003 accepted Admin-created Coordenador, country onboarding, Mentor as a formal Usuario papel, and Convites for Mentor and Lider.
+- ADR 0003 accepted Admin-created Coordenador, Mentor as a formal Usuario papel, and Convites for Mentor and Lider.
 
 ## In Progress
 
@@ -60,7 +60,7 @@ Use the existing approved `.env.local` development configuration; do not print i
 - Test Coordenador + Igreja Local manually.
 - Generate Supabase TypeScript types.
 - Add Edicao schema and UI.
-- Implement the Admin/Coordenador country onboarding, Mentor, and Convites feature from `specs/001-admin-coordenador-mentor-convites/tasks.md`.
+- Implement the Admin-created/authorized Coordenador, Mentor, and Convites feature from `specs/001-admin-coordenador-mentor-convites/tasks.md`.
 - Add Fechamento da Equipe schema with required transfer proof.
 
 ## Known Tradeoffs

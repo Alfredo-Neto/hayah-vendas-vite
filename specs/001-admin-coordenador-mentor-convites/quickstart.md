@@ -9,20 +9,20 @@ These scenarios guide future implementation validation. They do not require star
 - Use test Usuarios with non-secret disposable emails.
 - Do not print secrets or service-role keys.
 
-## Scenario 1: Admin authorizes Coordenador and country onboarding
+## Scenario 1: Admin authorizes Coordenador
 
 1. Sign in as an Admin test Usuario.
 2. Create or authorize Coordenador email `coord@example.test`.
 3. Sign in as `coord@example.test`.
-4. Complete onboarding with country code `BR`.
-5. Create Igreja Local with country `BR`.
-6. Verify creation succeeds and Coordenador membership exists.
-7. Attempt to create/administer Igreja Local with country `AR`.
+4. Create Igreja Local with a name only.
+5. Verify creation succeeds and Coordenador membership exists.
+6. Sign in as a non-authorized Usuario.
+7. Attempt to create/administer an Igreja Local as Coordenador.
 8. Verify operation is rejected by backend authorization, not merely hidden in UI.
 
 ## Scenario 2: Coordenador invites Mentor
 
-1. Sign in as active Coordenador scoped to the Igreja Local country.
+1. Sign in as active Coordenador of an Igreja Local.
 2. Create an Edicao inside the Igreja Local.
 3. Create Convite with papel `mentor` for `mentor@example.test`.
 4. Sign in as `mentor@example.test` and accept the Convite.
@@ -55,7 +55,7 @@ These scenarios guide future implementation validation. They do not require star
 Documentation-only changes:
 
 ```bash
-find specs/001-admin-coordenador-mentor-convites -type f -maxdepth 3 -print
+find specs/001-admin-coordenador-mentor-convites -maxdepth 3 -type f -print
 ```
 
 If product or TypeScript files changed in a future implementation:

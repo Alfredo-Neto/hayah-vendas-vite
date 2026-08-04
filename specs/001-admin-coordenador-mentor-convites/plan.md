@@ -1,4 +1,4 @@
-# Implementation Plan: Admin Coordenador country onboarding and Mentor Convites
+# Implementation Plan: Admin Coordenador and Mentor Convites
 
 **Branch**: `fm/hayah-admin-mentor-spec-i9` | **Date**: 2026-08-04 | **Spec**: `specs/001-admin-coordenador-mentor-convites/spec.md`
 
@@ -6,7 +6,7 @@
 
 ## Summary
 
-Prepare the Hayah domain and implementation path for Admin-authorized Coordenadores, Coordenador country onboarding, Mentor as a formal Usuario papel, and Convites for Mentor and Lider. The future implementation should extend Supabase schema/RLS/RPC boundaries first, then add small React/Vite surfaces for Admin authorization, Coordenador onboarding, Convite creation/acceptance, Mentor supervision, and Lider Mentor context. Fechamento da Equipe remains Lider work; Coordenador validates; Ranking remains based on validated Fechamentos.
+Prepare the Hayah domain and implementation path for Admin-authorized Coordenadores, Mentor as a formal Usuario papel, and Convites for Mentor and Lider. The future implementation should extend Supabase schema/RLS/RPC boundaries first, then add small React/Vite surfaces for Admin authorization, Convite creation/acceptance, Mentor supervision, and Lider Mentor context. Fechamento da Equipe remains Lider work; Mentor does not consolidate Fechamento details; Coordenador validates; Ranking remains based on validated Fechamentos.
 
 ## Technical Context
 
@@ -18,11 +18,11 @@ Prepare the Hayah domain and implementation path for Admin-authorized Coordenado
 **Project Type**: Web application  
 **Performance Goals**: Normal dashboard interactions should remain simple list/detail flows; no bulk sales processing in this feature  
 **Constraints**: No local Supabase stack in this planning task; no secrets; preserve ADR 0001/0002 stack; do not implement product feature during Spec Kit preparation  
-**Scale/Scope**: First operational version for one Coordenador, one Igreja Local, Edicoes, Equipes, Convites, Mentors, Lideres, Fechamentos, and Ranking
+**Scale**: First operational version for one Coordenador, one Igreja Local, Edicoes, Equipes, Convites, Mentors, Lideres, Fechamentos, and Ranking
 
 ## Constitution Check
 
-- **Hayah domain language**: PASS. Spec and docs use Admin, Usuario, Coordenador, Pais de Operacao, Igreja Local, Edicao, Equipe, Mentor, Lider, Convite, Fechamento da Equipe, Ranking.
+- **Hayah domain language**: PASS. Spec and docs use Admin, Usuario, Coordenador, Igreja Local, Edicao, Equipe, Mentor, Lider, Convite, Fechamento da Equipe, Ranking.
 - **Tracer bullet first**: PASS. Mentor supports Equipes/Lideres but does not take Fechamento or validation ownership.
 - **Supabase protects domain**: PASS. Foundational tasks require schema, constraints, RLS/RPC, and tests before UI.
 - **Lean React/Vite implementation**: PASS. Plan stays within accepted stack from ADR 0001/0002.
@@ -63,7 +63,7 @@ supabase/
 
 docs/
 ├── adr/
-│   └── 0003-admin-country-mentor-convites.md
+│   └── 0003-admin-mentor-convites.md
 └── modelo-minimo.md
 ```
 
@@ -71,7 +71,7 @@ docs/
 
 ## Phase 0 Research Output
 
-See `research.md` for decisions on Admin modeling, country scope, Mentor assignments, Convites, and test strategy.
+See `research.md` for decisions on Admin modeling, Mentor assignments, Convites, and test strategy.
 
 ## Phase 1 Design Output
 

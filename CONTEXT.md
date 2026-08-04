@@ -15,12 +15,8 @@ A product operator who creates or authorizes Coordenadores before they administe
 Avoid: using admin to mean Coordenador.
 
 **Coordenador**
-A Usuario authorized by an Admin who administers one Igreja Local within their country of origin/operation. In the first version, a Usuario can coordinate only one Igreja Local.
+A Usuario authorized by an Admin who administers one Igreja Local. In the first version, a Usuario can coordinate only one Igreja Local.
 Avoid: admin global.
-
-**Pais de Operacao**
-The country selected by the Coordenador during onboarding and used as their allowed operational scope for Igrejas Locais.
-Avoid: unscoped global coordinator.
 
 **Edicao**
 A time-boxed sales campaign inside one Igreja Local. Equipes, roles, Fechamentos da Equipe, and Ranking belong to an Edicao.

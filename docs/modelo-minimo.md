@@ -5,12 +5,12 @@ Este documento registra o modelo minimo para reconstruir o produto com React, Vi
 ## Bala Tracadora
 
 1. Admin cria ou autoriza um Coordenador.
-2. Coordenador entra no sistema e escolhe seu pais de operacao no onboarding.
-3. Coordenador cria uma Igreja Local dentro do seu pais de operacao.
-4. Coordenador cria uma Edicao.
-5. Coordenador cria uma Equipe.
-6. Coordenador cria Convites de Mentor e/ou Lider para a Edicao/Equipe.
-7. Mentor ou Lider aceita o Convite.
+2. Coordenador cria uma Igreja Local.
+3. Coordenador cria uma Edicao.
+4. Coordenador cria uma Equipe.
+5. Coordenador cria Convites de Mentor e/ou Lider para a Edicao/Equipe.
+6. Mentor ou Lider aceita o Convite.
+7. Mentor acompanha uma ou mais Equipes e supervisiona Lideres, sem consolidar detalhes de Fechamento da Equipe.
 8. Lider envia o Fechamento da Equipe.
 9. Coordenador valida o Fechamento.
 10. Coordenador ve um Ranking da Edicao por Equipe.
@@ -20,11 +20,10 @@ Este documento registra o modelo minimo para reconstruir o produto com React, Vi
 - Igreja Local: limite administrativo principal.
 - Usuario: pessoa autenticada que participa de uma Igreja Local.
 - Admin: operador do produto que cria ou autoriza Coordenadores.
-- Coordenador: Usuario autorizado que administra uma Igreja Local dentro do seu pais de operacao.
-- Pais de Operacao: pais escolhido pelo Coordenador no onboarding e usado como escopo administrativo.
+- Coordenador: Usuario autorizado que administra uma Igreja Local.
 - Edicao: campanha de vendas dentro de uma Igreja Local.
 - Equipe: grupo dentro de uma Edicao, sob responsabilidade de um Lider.
-- Mentor: Usuario atribuido a acompanhar uma ou mais Equipes em uma Edicao e supervisionar Lideres, sem assumir Fechamento da Equipe.
+- Mentor: Usuario atribuido a acompanhar uma ou mais Equipes em uma Edicao e supervisionar Lideres, sem assumir ou consolidar Fechamento da Equipe.
 - Lider: Usuario atribuido a uma Equipe dentro de uma Edicao.
 - Convite: permissao para um Usuario entrar em uma Igreja Local e assumir um papel/atribuicao, incluindo Mentor ou Lider.
 - Fechamento da Equipe: comprovacao de valor ja repassado pelo Lider para a Igreja Local.
@@ -55,7 +54,6 @@ Representa a Igreja Local administrada pelo Coordenador.
 
 - `id`.
 - `nome`.
-- `pais_operacao`.
 - `criado_por_usuario_id`.
 - `criado_em`.
 - `atualizado_em`.
@@ -64,7 +62,6 @@ Regras da primeira versao:
 
 - Nome nao pode ser vazio.
 - Nome nao pode repetir, por simplicidade inicial.
-- `pais_operacao` deve ser preenchido com o pais de operacao do Coordenador autorizado.
 
 ### igreja_local_membros
 
@@ -82,7 +79,6 @@ Regras:
 - O mesmo Usuario nao pode aparecer duas vezes na mesma Igreja Local.
 - Na primeira versao, um Usuario nao pode ser Coordenador de duas Igrejas Locais.
 - Coordenador deve ter sido criado ou autorizado por um Admin antes de administrar uma Igreja Local.
-- Coordenador administra Igrejas Locais apenas dentro do seu pais de operacao.
 
 ### edicoes
 
@@ -192,12 +188,11 @@ Regras futuras:
 
 ## Operacoes Criticas
 
-### criar_igreja_local(nome_igreja, pais_operacao)
+### criar_igreja_local(nome_igreja)
 
 Entrada do React:
 
 - `nome_igreja`.
-- `pais_operacao`.
 
 Identidade:
 
@@ -207,13 +202,11 @@ Mudancas em transacao:
 
 1. Criar/atualizar `usuarios`.
 2. Bloquear se o Usuario nao foi criado ou autorizado por um Admin para atuar como Coordenador.
-3. Bloquear se o Coordenador nao concluiu onboarding com pais de operacao.
-4. Bloquear se `pais_operacao` nao bater com o pais de operacao do Coordenador.
-5. Bloquear se o Usuario ja for Coordenador de alguma Igreja Local.
-6. Bloquear se ja existir Igreja Local com mesmo nome.
-7. Criar `igrejas_locais` com `pais_operacao` registrado.
-8. Criar `igreja_local_membros` com `papel = coordenador`.
-9. Retornar a Igreja Local criada.
+3. Bloquear se o Usuario ja for Coordenador de alguma Igreja Local.
+4. Bloquear se ja existir Igreja Local com mesmo nome.
+5. Criar `igrejas_locais`.
+6. Criar `igreja_local_membros` com `papel = coordenador`.
+7. Retornar a Igreja Local criada.
 
 ### aceitar_convite_lider(code)
 

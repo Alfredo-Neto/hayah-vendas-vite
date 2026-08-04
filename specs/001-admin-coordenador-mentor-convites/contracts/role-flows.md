@@ -15,28 +15,16 @@ Rules:
 - Do not create an Igreja Local in this flow.
 - Do not store secrets in authorization records.
 
-## Coordenador completes country onboarding
-
-**Actor**: Authorized Coordenador  
-**Input**: Country code  
-**Outcome**: Coordenador authorization becomes active with country scope.
-
-Rules:
-
-- Reject unauthenticated Usuario.
-- Reject Usuario without Admin authorization.
-- Reject missing or invalid country code.
-- Reject changes that would move existing Igrejas Locais out of scope unless a future Admin process exists.
-
 ## Coordenador creates Igreja Local
 
 **Actor**: Active Coordenador  
-**Input**: Igreja Local name and country code/scope  
+**Input**: Igreja Local name  
 **Outcome**: Igreja Local and Coordenador membership exist.
 
 Rules:
 
-- Country must match Coordenador scope.
+- Reject unauthenticated Usuario.
+- Reject Usuario without Admin-created or Admin-authorized Coordenador status.
 - Existing uniqueness and non-empty-name rules from `docs/modelo-minimo.md` remain.
 - Database must discover authenticated Usuario from Supabase Auth rather than trusting frontend-provided sensitive IDs.
 
@@ -89,4 +77,4 @@ Rules:
 - Mentor and Equipes must share Igreja Local and Edicao.
 - Reject cross-Igreja Local and cross-Edicao assignments.
 - Mentor can supervise one or more Equipes.
-- Mentor does not gain Fechamento validation or ownership permissions.
+- Mentor does not gain Fechamento consolidation, validation, or ownership permissions.

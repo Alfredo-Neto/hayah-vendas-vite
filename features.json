@@ -59,7 +59,7 @@
     },
     {
       "id": "0008",
-      "name": "Admin Coordenador country onboarding and Mentor Convites",
+      "name": "Admin Coordenador and Mentor Convites",
       "status": "specified",
       "spec": "specs/001-admin-coordenador-mentor-convites/",
       "commit": null

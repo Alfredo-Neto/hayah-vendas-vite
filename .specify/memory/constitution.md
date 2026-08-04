@@ -9,7 +9,7 @@ All specs, plans, tasks, UI copy, database names, and code concepts MUST use the
 Feature work MUST preserve the delivery path documented in `docs/modelo-minimo.md` and `progress.md`: Admin/Coordenador access -> Igreja Local -> Edicao -> Equipe -> Convites -> Fechamento da Equipe -> Validacao -> Ranking. New roles such as Mentor may support this path, but MUST NOT move ownership of Fechamento da Equipe away from Lider or validation away from Coordenador without a new ADR.
 
 ### III. Supabase protects the domain
-React sends user intent and Supabase Auth identifies the Usuario. Tenant boundaries, country scope, role assignments, impossible states, and sensitive authorization MUST be enforced by Supabase constraints, RLS, RPCs, or Edge Functions, not by frontend checks alone. No secrets may be read, logged, stored in specs, or committed.
+React sends user intent and Supabase Auth identifies the Usuario. Tenant boundaries, role assignments, impossible states, and sensitive authorization MUST be enforced by Supabase constraints, RLS, RPCs, or Edge Functions, not by frontend checks alone. No secrets may be read, logged, stored in specs, or committed.
 
 ### IV. Lean React/Vite implementation
 The accepted stack is React, Vite, TypeScript, Supabase, TanStack Router, TanStack Query, React Hook Form, Zod, and shadcn/ui per ADR 0001 and ADR 0002. Do not introduce Next, Clerk, or a heavy SaaS boilerplate without a new ADR.

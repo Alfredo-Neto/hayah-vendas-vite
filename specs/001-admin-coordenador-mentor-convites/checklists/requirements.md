@@ -1,4 +1,4 @@
-# Requirements Checklist: Admin Coordenador country onboarding and Mentor Convites
+# Requirements Checklist: Admin Coordenador and Mentor Convites
 
 **Purpose**: Validate the feature spec before implementation planning and task execution.  
 **Created**: 2026-08-04  
@@ -15,8 +15,6 @@
 ## Requirement Completeness
 
 - [x] Admin creates or authorizes Coordenador is explicit.
-- [x] Coordenador chooses country during onboarding is explicit.
-- [x] Coordenador country scope must be persisted and enforced.
 - [x] Mentor is a formal Usuario type/papel.
 - [x] Coordenador can invite Mentors and Lideres.
 - [x] Mentor accompanies one or more Equipes and supervises Lideres.

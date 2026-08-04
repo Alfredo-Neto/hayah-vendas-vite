@@ -1,4 +1,4 @@
-# Data Model: Admin Coordenador country onboarding and Mentor Convites
+# Data Model: Admin Coordenador and Mentor Convites
 
 This model extends `docs/modelo-minimo.md`; names below are conceptual and should be mapped to final SQL names during implementation.
 
@@ -18,9 +18,9 @@ Add/confirm relationships:
 
 Tenant boundary for Edicoes, Equipes, Convites, Fechamentos, and Ranking.
 
-Needed addition:
+Rules:
 
-- Country code / country of operation must match the Coordenador scope that creates/administers it.
+- Created/administered by an Admin-authorized Coordenador.
 
 ### igreja_local_membros
 
@@ -36,7 +36,7 @@ Role values needed for this feature:
 Rules:
 
 - One row per Usuario per Igreja Local.
-- Coordenador membership requires Admin authorization and country scope.
+- Coordenador membership requires Admin authorization.
 - Mentor/Lider membership is created or reused through Convite acceptance.
 
 ### edicoes
@@ -96,7 +96,7 @@ Rules to preserve:
 
 - Lider sends Fechamento only for their Equipe.
 - Coordenador validates or rejects.
-- Mentor has no ownership, consolidation, submission, or validation authority.
+- Mentor has no ownership, consolidation, submission, edit, or validation authority.
 - Ranking sums only `status = validado`.
 
 ## New or expanded entities
@@ -128,15 +128,14 @@ Candidate fields:
 - `usuario_id` nullable until first sign-in, or `email`
 - `authorized_by_admin_usuario_id`
 - `status`: pending/active/revoked
-- `country_code` nullable until onboarding if the Coordenador chooses it
-- `onboarded_at`
+- `activated_at`
 - `criado_em`, `atualizado_em`
 
 Rules:
 
 - Email matching must prevent another Usuario from claiming an authorization.
-- Active Coordenador scope is required before Igreja Local administration.
-- Country changes after Igrejas Locais exist require a future rule; default is reject or require Admin intervention.
+- Active Coordenador authorization is required before Igreja Local administration.
+- In the first version, one Usuario cannot coordinate two Igrejas Locais.
 
 ### mentor_equipe_assignments
 
@@ -166,8 +165,8 @@ Rules:
 
 1. Admin creates pending Coordenador authorization for email.
 2. Matching Usuario signs in.
-3. Coordenador chooses country during onboarding.
-4. Authorization becomes active and can create/administer Igrejas Locais in that country.
+3. Authorization becomes active or is recognized as active.
+4. Authorized Coordenador can create/administer one Igreja Local in the first version.
 5. Admin may revoke authorization; downstream effects need implementation decision and tests.
 
 ### Mentor Convite
