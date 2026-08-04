@@ -64,12 +64,21 @@ create policy igreja_local_membros_select_self on public.igreja_local_membros
 
 create policy admin_authorizations_select_self on public.admin_authorizations
   for select to authenticated
-  using (auth_user_id = auth.uid() or lower(email) = lower(coalesce(auth.jwt() ->> 'email', '')));
+  using (
+    auth_user_id = auth.uid()
+    or (
+      auth_user_id is null
+      and lower(email) = lower(coalesce(auth.jwt() ->> 'email', ''))
+    )
+  );
 
 create policy coordenador_authorizations_select_self on public.coordenador_authorizations
   for select to authenticated
   using (
-    lower(email) = lower(coalesce(auth.jwt() ->> 'email', ''))
+    (
+      usuario_id is null
+      and lower(email) = lower(coalesce(auth.jwt() ->> 'email', ''))
+    )
     or exists (
       select 1
       from public.usuarios usuario
@@ -108,20 +117,45 @@ $$;
 
 create or replace function public.current_usuario_is_admin()
 returns boolean
-language sql
+language plpgsql
 security definer
 set search_path = public, auth
-stable
 as $$
-  select exists (
-    select 1
-    from public.admin_authorizations admin_auth
-    where admin_auth.status = 'active'
-      and (
-        admin_auth.auth_user_id = auth.uid()
-        or lower(admin_auth.email) = lower(coalesce(auth.jwt() ->> 'email', ''))
+declare
+  v_auth_user_id uuid := auth.uid();
+  v_email text := lower(trim(coalesce(auth.jwt() ->> 'email', '')));
+  v_authorization public.admin_authorizations;
+begin
+  if v_auth_user_id is null or v_email = '' then
+    return false;
+  end if;
+
+  select * into v_authorization
+  from public.admin_authorizations admin_auth
+  where admin_auth.status = 'active'
+    and (
+      admin_auth.auth_user_id = v_auth_user_id
+      or (
+        admin_auth.auth_user_id is null
+        and lower(admin_auth.email) = v_email
       )
-  );
+    )
+  limit 1;
+
+  if v_authorization.id is null then
+    return false;
+  end if;
+
+  if v_authorization.auth_user_id is null then
+    update public.admin_authorizations
+    set auth_user_id = v_auth_user_id,
+        atualizado_em = now()
+    where id = v_authorization.id
+      and auth_user_id is null;
+  end if;
+
+  return true;
+end;
 $$;
 
 create or replace function public.autorizar_coordenador(p_email text, p_nome text default null)
@@ -191,7 +225,10 @@ begin
   where autorizacao.status = 'active'
     and (
       autorizacao.usuario_id = v_usuario.id
-      or lower(autorizacao.email) = lower(v_usuario.email)
+      or (
+        autorizacao.usuario_id is null
+        and lower(autorizacao.email) = lower(v_usuario.email)
+      )
     )
   limit 1;
 
@@ -204,7 +241,8 @@ begin
     set usuario_id = v_usuario.id,
         activated_at = coalesce(activated_at, now()),
         atualizado_em = now()
-    where id = v_autorizacao.id;
+    where id = v_autorizacao.id
+      and usuario_id is null;
   end if;
 
   if exists (
