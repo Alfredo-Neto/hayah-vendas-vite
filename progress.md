@@ -34,6 +34,7 @@ The first delivery path is the tracer bullet:
 - `/auth` form uses React Hook Form and Zod validation.
 - Authenticated app routes are protected, `/auth` redirects authenticated Usuarios to `/igreja-local`, and logout signs out through Supabase before returning to `/auth`.
 - `/admin` provides the minimal Admin UI for authorizing Coordenador access through `autorizar_coordenador`.
+- Authenticated non-authorized Usuarios see an access-pending state instead of Coordenador operational routes; Admin and Coordenador navigation is based on `current_usuario_access`.
 - Domain direction updated: Ranking should use validated valor repassado with transfer proof, not raw individual Vendas or declared lucro.
 - ADR 0003 accepted Admin-created Coordenador, Mentor as a formal Usuario papel, and Convites for Mentor and Lider.
 
@@ -58,8 +59,8 @@ Use the existing approved `.env.local` development configuration; do not print i
 
 ## Next
 
-- Apply `supabase/migrations/20260804071000_admin_coordenador_authorization.sql` in an approved Supabase environment and manually validate `/admin` -> `autorizar_coordenador` -> `/igreja-local` -> `criar_igreja_local`.
-- Add an executable Supabase SQL/RLS test harness for Admin Coordenador authorization checks.
+- Apply pending Supabase migrations in an approved Supabase environment and manually validate `/admin` -> `autorizar_coordenador` -> `/igreja-local` -> `criar_igreja_local`.
+- Add an executable Supabase SQL/RLS test harness for Admin Coordenador authorization checks; until then, run `npm run verify:coordenador-guards` for the committed static RPC/RLS boundary check.
 - Generate Supabase TypeScript types from the approved environment after migration application.
 - Add Edicao UI.
 - Implement the remaining Mentor, Lider Convites, Mentor-Equipe assignment, Fechamento, and Ranking work from `specs/001-admin-coordenador-mentor-convites/tasks.md`.

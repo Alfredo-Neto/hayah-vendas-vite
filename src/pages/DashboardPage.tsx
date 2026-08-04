@@ -6,6 +6,10 @@ import {
   Receipt,
   Trophy,
 } from 'lucide-react';
+import { PageCard } from '@/components/PageCard';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { CardContent } from '@/components/ui/card';
+import { canOperateAsCoordenador, useUserAccessQuery } from '@/features/access/userAccess';
 import { useSessionQuery } from '@/features/auth/authQueries';
 
 function getDisplayName(email: string | undefined) {
@@ -51,7 +55,40 @@ const featureCards = [
 
 export function DashboardPage() {
   const session = useSessionQuery();
+  const access = useUserAccessQuery();
   const displayName = getDisplayName(session.data?.user?.email);
+
+  if (access.isLoading) {
+    return <PageCard eyebrow="Autorização" title="Verificando acesso" description="Confirmando suas permissões..." />;
+  }
+
+  if (access.isError) {
+    return (
+      <PageCard eyebrow="Autorização" title="Não foi possível verificar seu acesso" description="Tente sair e entrar novamente.">
+        <CardContent>
+          <Alert variant="destructive"><AlertDescription>{access.error.message}</AlertDescription></Alert>
+        </CardContent>
+      </PageCard>
+    );
+  }
+
+  if (!canOperateAsCoordenador(access.data)) {
+    return (
+      <PageCard
+        eyebrow="Acesso pendente"
+        title={`Olá, ${displayName}.`}
+        description="Seu cadastro está ativo, mas um Admin ainda precisa autorizar você como Coordenador antes de liberar o painel operacional."
+      >
+        <CardContent>
+          <Alert>
+            <AlertDescription>
+              A criação de acesso em /auth não concede privilégios de Coordenador. Aguarde autorização do Admin ou entre com um email já autorizado.
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </PageCard>
+    );
+  }
 
   return (
     <div className="mx-auto max-w-5xl space-y-8">

@@ -37,13 +37,13 @@ export function AuthPage() {
   });
   const title = mode === 'sign-up' ? 'Criar acesso' : 'Entrar';
   const description = mode === 'sign-up'
-    ? 'Crie seu acesso para cadastrar a Igreja Local e virar Coordenador inicial.'
+    ? 'Crie seu acesso. Um Admin precisa autorizar Coordenador antes de administrar uma Igreja Local.'
     : 'Entre com email e senha para continuar.';
 
   function handleSubmit(values: AuthFormValues) {
     activeMutation.mutate(values, {
       onSuccess: () => {
-        void navigate({ to: '/igreja-local', replace: true });
+        void navigate({ to: '/dashboard', replace: true });
       },
     });
   }
@@ -66,7 +66,7 @@ export function AuthPage() {
   }
 
   if (session.data) {
-    return <Navigate to="/igreja-local" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   return (
@@ -109,8 +109,8 @@ export function AuthPage() {
             <Alert>
               <AlertDescription>
                 {mode === 'sign-up'
-                  ? 'Acesso criado. Se o Supabase pedir confirmação, confira seu email antes de entrar.'
-                  : 'Entrada realizada. Agora crie ou continue sua Igreja Local.'}
+                  ? 'Acesso criado. Se o Supabase pedir confirmação, confira seu email antes de entrar. Admin ainda precisa autorizar Coordenador.'
+                  : 'Entrada realizada. Verificaremos sua autorização antes de liberar operações de Coordenador.'}
               </AlertDescription>
             </Alert>
           ) : null}

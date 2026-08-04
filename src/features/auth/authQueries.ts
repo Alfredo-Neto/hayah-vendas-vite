@@ -1,5 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
+import { userAccessQueryKey } from '@/features/access/userAccess';
 import { supabase } from '../../lib/supabase';
 
 export const authSessionQueryKey = ['auth', 'session'] as const;
@@ -39,10 +40,12 @@ export function useAuthSessionSubscription() {
     const { data } = supabase.auth.onAuthStateChange((event) => {
       if (event === 'SIGNED_OUT') {
         queryClient.setQueryData(authSessionQueryKey, null);
+        queryClient.removeQueries({ queryKey: userAccessQueryKey });
         return;
       }
 
       void queryClient.invalidateQueries({ queryKey: authSessionQueryKey });
+      void queryClient.invalidateQueries({ queryKey: userAccessQueryKey });
     });
 
     return () => {

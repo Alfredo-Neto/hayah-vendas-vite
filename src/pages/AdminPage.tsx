@@ -6,15 +6,41 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { PageCard } from '@/components/PageCard';
 import { useAuthorizeCoordenadorMutation } from '@/features/admin/adminMutations';
+import { useUserAccessQuery } from '@/features/access/userAccess';
 
 export function AdminPage() {
   const [email, setEmail] = useState('');
   const [nome, setNome] = useState('');
   const authorizeCoordenador = useAuthorizeCoordenadorMutation();
+  const access = useUserAccessQuery();
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     authorizeCoordenador.mutate({ email, nome });
+  }
+
+  if (access.isLoading) {
+    return <PageCard eyebrow="Admin" title="Verificando acesso" description="Confirmando se você tem autorização de Admin..." />;
+  }
+
+  if (access.isError) {
+    return (
+      <PageCard eyebrow="Admin" title="Não foi possível verificar seu acesso" description="Tente sair e entrar novamente.">
+        <CardContent>
+          <Alert variant="destructive"><AlertDescription>{access.error.message}</AlertDescription></Alert>
+        </CardContent>
+      </PageCard>
+    );
+  }
+
+  if (!access.data?.is_admin) {
+    return (
+      <PageCard
+        eyebrow="Admin"
+        title="Acesso não autorizado"
+        description="Apenas Admin pode autorizar Coordenadores. Seu cadastro não tem permissão para esta área."
+      />
+    );
   }
 
   return (

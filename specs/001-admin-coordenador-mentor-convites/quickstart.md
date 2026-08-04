@@ -65,7 +65,11 @@ npm run typecheck -- --pretty false
 npm run build
 ```
 
-If Supabase rules changed, also run the repo-approved SQL/RLS verification commands documented by that task.
+If Supabase rules changed, also run the repo-approved SQL/RLS verification commands documented by that task. For the focused Coordenador guard slice, run the static boundary check:
+
+```bash
+npm run verify:coordenador-guards
+```
 
 ## Current implementation slice validation (Admin -> Coordenador)
 

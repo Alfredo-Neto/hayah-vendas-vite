@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { userAccessQueryKey } from '@/features/access/userAccess';
 import { supabase } from '../../lib/supabase';
 import { authSessionQueryKey } from './authQueries';
 
@@ -26,6 +27,7 @@ export function useSignUpMutation() {
     onSuccess: (session) => {
       queryClient.setQueryData(authSessionQueryKey, session);
       void queryClient.invalidateQueries({ queryKey: authSessionQueryKey });
+      void queryClient.invalidateQueries({ queryKey: userAccessQueryKey });
     },
   });
 }
@@ -49,6 +51,7 @@ export function useSignInMutation() {
     onSuccess: (session) => {
       queryClient.setQueryData(authSessionQueryKey, session);
       void queryClient.invalidateQueries({ queryKey: authSessionQueryKey });
+      void queryClient.invalidateQueries({ queryKey: userAccessQueryKey });
     },
   });
 }
@@ -66,6 +69,7 @@ export function useSignOutMutation() {
     },
     onSuccess: () => {
       queryClient.setQueryData(authSessionQueryKey, null);
+      queryClient.removeQueries({ queryKey: userAccessQueryKey });
       void queryClient.invalidateQueries({ queryKey: authSessionQueryKey });
     },
   });

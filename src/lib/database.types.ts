@@ -552,6 +552,16 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: boolean
       }
+      current_usuario_access: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          is_admin: boolean
+          is_coordenador_authorized: boolean
+          is_coordenador: boolean
+          coordenador_igreja_local_id: string | null
+          status: string
+        }[]
+      }
     }
     Enums: {
       coordenador_authorization_status: "active" | "revoked"
