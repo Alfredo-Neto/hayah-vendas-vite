@@ -1,4 +1,4 @@
-import { Link } from '@tanstack/react-router';
+import { Link, Navigate } from '@tanstack/react-router';
 import {
   ArrowRight,
   CalendarDays,
@@ -72,7 +72,13 @@ export function DashboardPage() {
     );
   }
 
-  if (!canOperateAsCoordenador(access.data)) {
+  const canOperate = canOperateAsCoordenador(access.data);
+
+  if (access.data?.is_admin && !canOperate) {
+    return <Navigate to="/admin" replace />;
+  }
+
+  if (!canOperate) {
     return (
       <PageCard
         eyebrow="Acesso pendente"
