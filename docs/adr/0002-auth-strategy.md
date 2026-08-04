@@ -22,6 +22,6 @@ The app may later add OAuth providers, password reset, email confirmation rules,
 
 The frontend can use Supabase's standard auth client instead of building password handling or session management from scratch.
 
-The app still needs professional auth hardening before launch: route protection, logout, password reset, email confirmation decision, session-expiry handling, and RLS policies.
+The app still needs professional auth hardening before launch: password reset, email confirmation decision, session-expiry handling, and RLS policies.
 
 No product permission should depend only on frontend UI checks.

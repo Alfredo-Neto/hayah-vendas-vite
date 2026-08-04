@@ -14,8 +14,9 @@ import {
 import { useEffect, useState } from 'react';
 import { HayahBrand } from '@/components/HayahBrand';
 import { UserAvatar } from '@/components/UserAvatar';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { cn } from '@/lib/utils';
-import { supabase } from '@/lib/supabase';
+import { useSignOutMutation } from '@/features/auth/authMutations';
 import { useSessionQuery } from '@/features/auth/authQueries';
 
 const navItems = [
@@ -74,9 +75,10 @@ type SidebarFooterProps = {
   displayName: string;
   email: string | undefined;
   onSignOut: () => void;
+  isSigningOut: boolean;
 };
 
-function SidebarFooter({ displayName, email, onSignOut }: SidebarFooterProps) {
+function SidebarFooter({ displayName, email, onSignOut, isSigningOut }: SidebarFooterProps) {
   return (
     <div className="border-t border-border px-4 py-4">
       <div className="mb-3 flex items-center gap-3 px-1">
@@ -89,10 +91,11 @@ function SidebarFooter({ displayName, email, onSignOut }: SidebarFooterProps) {
       <button
         type="button"
         onClick={onSignOut}
-        className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent/50 hover:text-foreground"
+        disabled={isSigningOut}
+        className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent/50 hover:text-foreground disabled:cursor-not-allowed disabled:opacity-60"
       >
         <LogOut className="size-4" />
-        Sair
+        {isSigningOut ? 'Saindo...' : 'Sair'}
       </button>
     </div>
   );
@@ -102,6 +105,7 @@ export function AppLayout() {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const navigate = useNavigate();
   const session = useSessionQuery();
+  const signOut = useSignOutMutation();
   const email = session.data?.user?.email;
   const displayName = getDisplayName(email);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -117,11 +121,16 @@ export function AppLayout() {
     };
   }, [mobileMenuOpen]);
 
-  async function handleSignOut() {
+  function handleSignOut() {
     setMobileMenuOpen(false);
-    await supabase.auth.signOut();
-    void navigate({ to: '/auth' });
+    signOut.mutate(undefined, {
+      onSuccess: () => {
+        void navigate({ to: '/auth', replace: true });
+      },
+    });
   }
+
+  const signOutErrorMessage = signOut.error instanceof Error ? signOut.error.message : 'Não foi possível sair. Tente novamente.';
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -132,7 +141,7 @@ export function AppLayout() {
 
         <SidebarNav pathname={pathname} />
 
-        <SidebarFooter displayName={displayName} email={email} onSignOut={() => void handleSignOut()} />
+        <SidebarFooter displayName={displayName} email={email} onSignOut={handleSignOut} isSigningOut={signOut.isPending} />
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
@@ -188,12 +197,17 @@ export function AppLayout() {
                 <SidebarNav pathname={pathname} onNavigate={() => setMobileMenuOpen(false)} />
               </div>
 
-              <SidebarFooter displayName={displayName} email={email} onSignOut={() => void handleSignOut()} />
+              <SidebarFooter displayName={displayName} email={email} onSignOut={handleSignOut} isSigningOut={signOut.isPending} />
             </aside>
           </div>
         ) : null}
 
         <main className="flex-1 px-6 py-8 lg:px-10">
+          {signOut.isError ? (
+            <Alert variant="destructive" className="mb-6">
+              <AlertDescription>{signOutErrorMessage}</AlertDescription>
+            </Alert>
+          ) : null}
           <Outlet />
         </main>
 

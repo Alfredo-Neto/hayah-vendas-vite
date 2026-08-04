@@ -31,6 +31,7 @@ The first delivery path is the tracer bullet:
 - `/auth` uses email/password sign-up and sign-in through Supabase Auth.
 - App navigation uses TanStack Router.
 - `/auth` form uses React Hook Form and Zod validation.
+- Authenticated app routes are protected, `/auth` redirects authenticated Usuarios to `/igreja-local`, and logout signs out through Supabase before returning to `/auth`.
 - Domain direction updated: Ranking should use validated valor repassado with transfer proof, not raw individual Vendas or declared lucro.
 
 ## In Progress
@@ -38,10 +39,22 @@ The first delivery path is the tracer bullet:
 - Test Coordenador + Igreja Local manually.
 - Model Fechamento da Equipe with valor repassado and comprovante de transferencia.
 
+## Manual Verification: Auth + Igreja Local
+
+Use the existing approved `.env.local` development configuration; do not print its values and do not start a fresh local Supabase stack.
+
+1. Run `npm run dev`.
+2. In a fresh/anonymous browser session, visit `/dashboard`, `/igreja-local`, `/edicoes`, `/equipes`, `/convites`, `/vendas`, and `/ranking`; each protected route should show only the auth loading state briefly, then redirect to `/auth`.
+3. Create access or sign in at `/auth`; successful authenticated access should land on `/igreja-local`.
+4. While authenticated, visit `/auth`; it should redirect to `/igreja-local` instead of showing the auth form.
+5. Create an Igreja Local with a unique valid name and confirm the success message still appears.
+6. Click `Sair`; the app should disable the logout button while signing out, clear the Supabase session, and return to `/auth`.
+7. After logout, revisit a protected route and confirm it redirects back to `/auth`.
+8. Regression check for stale local Supabase state: with the Vite dev server running and the approved `.env.local` loaded into the shell without printing values, run `APP_URL=http://127.0.0.1:<port> node scripts/check-route-protection.mjs`; it injects an invalid local Supabase session in a disposable Chrome profile and must still land on `/auth`, not Dashboard.
+
 ## Next
 
 - Test Coordenador + Igreja Local manually.
-- Add route protection and logout.
 - Generate Supabase TypeScript types.
 - Add Edicao schema and UI.
 - Add Fechamento da Equipe schema with required transfer proof.

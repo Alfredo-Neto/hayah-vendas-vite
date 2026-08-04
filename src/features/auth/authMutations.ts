@@ -1,5 +1,6 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '../../lib/supabase';
+import { authSessionQueryKey } from './authQueries';
 
 type EmailPasswordInput = {
   email: string;
@@ -7,9 +8,11 @@ type EmailPasswordInput = {
 };
 
 export function useSignUpMutation() {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async ({ email, password }: EmailPasswordInput) => {
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
       });
@@ -17,14 +20,22 @@ export function useSignUpMutation() {
       if (error) {
         throw error;
       }
+
+      return data.session;
+    },
+    onSuccess: (session) => {
+      queryClient.setQueryData(authSessionQueryKey, session);
+      void queryClient.invalidateQueries({ queryKey: authSessionQueryKey });
     },
   });
 }
 
 export function useSignInMutation() {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async ({ email, password }: EmailPasswordInput) => {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
@@ -32,6 +43,30 @@ export function useSignInMutation() {
       if (error) {
         throw error;
       }
+
+      return data.session;
+    },
+    onSuccess: (session) => {
+      queryClient.setQueryData(authSessionQueryKey, session);
+      void queryClient.invalidateQueries({ queryKey: authSessionQueryKey });
+    },
+  });
+}
+
+export function useSignOutMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase.auth.signOut();
+
+      if (error) {
+        throw error;
+      }
+    },
+    onSuccess: () => {
+      queryClient.setQueryData(authSessionQueryKey, null);
+      void queryClient.invalidateQueries({ queryKey: authSessionQueryKey });
     },
   });
 }
