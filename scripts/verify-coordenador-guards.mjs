@@ -34,6 +34,16 @@ const checks = [
     pass: accessMigration.includes('v_is_coordenador_authorized and v_coordenador_igreja_local_id is not null')
       && accessMigration.includes('case when v_is_coordenador_authorized then v_coordenador_igreja_local_id else null end'),
   },
+  {
+    name: 'child operational RLS verifies parent Igreja Local consistency',
+    pass: /create or replace function public\.edicao_belongs_to_igreja_local/.test(accessMigration)
+      && /create or replace function public\.equipe_belongs_to_edicao_igreja_local/.test(accessMigration)
+      && /create or replace function public\.convite_context_belongs_to_igreja_local/.test(accessMigration)
+      && /create policy equipes_operate_coordenador_authorized[\s\S]*public\.edicao_belongs_to_igreja_local\(edicao_id, igreja_local_id\)/.test(accessMigration)
+      && /create policy convites_operate_coordenador_authorized[\s\S]*public\.convite_context_belongs_to_igreja_local\(edicao_id, equipe_id, igreja_local_id\)/.test(accessMigration)
+      && /create policy edicao_assignments_operate_coordenador_authorized[\s\S]*public\.equipe_belongs_to_edicao_igreja_local\(equipe_id, edicao_id, igreja_local_id\)/.test(accessMigration)
+      && /create policy fechamentos_equipe_operate_coordenador_authorized[\s\S]*public\.equipe_belongs_to_edicao_igreja_local\(equipe_id, edicao_id, igreja_local_id\)/.test(accessMigration),
+  },
 ];
 
 const failed = checks.filter((check) => !check.pass);
