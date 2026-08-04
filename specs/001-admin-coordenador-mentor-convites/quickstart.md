@@ -1,8 +1,8 @@
 # Quickstart validation scenarios
 
-These scenarios guide future implementation validation. They do not require starting a local Supabase stack during this documentation task.
+These scenarios guide implementation validation. They do not require starting a local Supabase stack during documentation-only tasks.
 
-## Prerequisites for future implementation workers
+## Prerequisites for implementation workers
 
 - Review `CONTEXT.md`, `docs/modelo-minimo.md`, ADR 0001, ADR 0002, ADR 0003, and this spec directory.
 - Apply migrations in the approved Supabase environment or test harness.
@@ -58,11 +58,31 @@ Documentation-only changes:
 find specs/001-admin-coordenador-mentor-convites -maxdepth 3 -type f -print
 ```
 
-If product or TypeScript files changed in a future implementation:
+If product or TypeScript files changed:
 
 ```bash
 npm run typecheck -- --pretty false
 npm run build
 ```
 
-If Supabase rules changed in a future implementation, also run the repo-approved SQL/RLS verification commands documented by that task.
+If Supabase rules changed, also run the repo-approved SQL/RLS verification commands documented by that task.
+
+## Current implementation slice validation (Admin -> Coordenador)
+
+This repository still has no committed automated Supabase test harness. For the first Admin-created/authorized Coordenador slice, validate with:
+
+```bash
+npm run typecheck -- --pretty false
+npm run build
+```
+
+Manual database/application validation after applying `supabase/migrations/20260804071000_admin_coordenador_authorization.sql` to an approved development Supabase environment:
+
+1. Bootstrap the first Admin by inserting one row in `public.admin_authorizations` with the Admin's email, using an approved privileged database path. Do not commit or print secrets.
+2. Sign in as that Admin and open `/admin`.
+3. Authorize a Coordenador email. The UI calls `autorizar_coordenador`; a non-Admin should receive `Apenas Admin pode autorizar Coordenador.` from the backend.
+4. Sign in as the authorized Coordenador and open `/igreja-local`.
+5. Create a unique Igreja Local. The UI calls `criar_igreja_local`; the backend should create `igrejas_locais` and `igreja_local_membros` with `papel = coordenador`.
+6. Sign in as a Usuario without a Coordenador authorization and attempt the same Igreja Local creation. The backend should reject with `Admin precisa autorizar este Usuario como Coordenador antes de criar uma Igreja Local.`
+
+Remaining Spec Kit validation: add executable SQL/RLS tests when the repo adopts a Supabase test harness; Mentor, Lider Convites, Mentor-Equipe assignment, Fechamento, and Ranking are intentionally outside this slice.

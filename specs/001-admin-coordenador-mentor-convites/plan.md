@@ -6,7 +6,7 @@
 
 ## Summary
 
-Prepare the Hayah domain and implementation path for Admin-authorized Coordenadores, Mentor as a formal Usuario papel, and Convites for Mentor and Lider. The future implementation should extend Supabase schema/RLS/RPC boundaries first, then add small React/Vite surfaces for Admin authorization, Convite creation/acceptance, Mentor supervision, and Lider Mentor context. Fechamento da Equipe remains Lider work; Mentor does not consolidate Fechamento details; Coordenador validates; Ranking remains based on validated Fechamentos.
+Prepare the Hayah domain and implementation path for Admin-authorized Coordenadores, Mentor as a formal Usuario papel, and Convites for Mentor and Lider. The first Admin-authorized Coordenador slice uses Supabase schema/RLS/RPC boundaries and a small React/Vite Admin surface; remaining implementation should continue with Convite creation/acceptance, Mentor supervision, and Lider Mentor context. Fechamento da Equipe remains Lider work; Mentor does not consolidate Fechamento details; Coordenador validates; Ranking remains based on validated Fechamentos.
 
 ## Technical Context
 
@@ -17,7 +17,7 @@ Prepare the Hayah domain and implementation path for Admin-authorized Coordenado
 **Target Platform**: Authenticated browser app with Supabase backend  
 **Project Type**: Web application  
 **Performance Goals**: Normal dashboard interactions should remain simple list/detail flows; no bulk sales processing in this feature  
-**Constraints**: No local Supabase stack in this planning task; no secrets; preserve ADR 0001/0002 stack; do not implement product feature during Spec Kit preparation  
+**Constraints**: Use an approved Supabase environment or committed test harness for database validation; no secrets; preserve ADR 0001/0002 stack
 **Scale**: First operational version for one Coordenador, one Igreja Local, Edicoes, Equipes, Convites, Mentors, Lideres, Fechamentos, and Ranking
 
 ## Constitution Check
@@ -69,7 +69,7 @@ docs/
 └── modelo-minimo.md
 ```
 
-**Structure Decision**: Use the existing single Vite app plus Supabase migrations. Add feature-specific frontend modules only when implementation begins; this planning task intentionally avoids creating product code directories.
+**Structure Decision**: Use the existing single Vite app plus Supabase migrations. Add feature-specific frontend modules only for the slice being implemented.
 
 ## Phase 0 Research Output
 

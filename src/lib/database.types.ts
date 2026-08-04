@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_authorizations: {
+        Row: {
+          atualizado_em: string
+          auth_user_id: string | null
+          criado_em: string
+          email: string
+          id: string
+          status: Database["public"]["Enums"]["coordenador_authorization_status"]
+        }
+        Insert: {
+          atualizado_em?: string
+          auth_user_id?: string | null
+          criado_em?: string
+          email: string
+          id?: string
+          status?: Database["public"]["Enums"]["coordenador_authorization_status"]
+        }
+        Update: {
+          atualizado_em?: string
+          auth_user_id?: string | null
+          criado_em?: string
+          email?: string
+          id?: string
+          status?: Database["public"]["Enums"]["coordenador_authorization_status"]
+        }
+        Relationships: []
+      }
       convites: {
         Row: {
           accepted_at: string | null
@@ -97,6 +124,57 @@ export type Database = {
             columns: ["igreja_local_id"]
             isOneToOne: false
             referencedRelation: "igrejas_locais"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      coordenador_authorizations: {
+        Row: {
+          activated_at: string | null
+          atualizado_em: string
+          authorized_by_admin_usuario_id: string
+          criado_em: string
+          email: string
+          id: string
+          nome: string | null
+          status: Database["public"]["Enums"]["coordenador_authorization_status"]
+          usuario_id: string | null
+        }
+        Insert: {
+          activated_at?: string | null
+          atualizado_em?: string
+          authorized_by_admin_usuario_id: string
+          criado_em?: string
+          email: string
+          id?: string
+          nome?: string | null
+          status?: Database["public"]["Enums"]["coordenador_authorization_status"]
+          usuario_id?: string | null
+        }
+        Update: {
+          activated_at?: string | null
+          atualizado_em?: string
+          authorized_by_admin_usuario_id?: string
+          criado_em?: string
+          email?: string
+          id?: string
+          nome?: string | null
+          status?: Database["public"]["Enums"]["coordenador_authorization_status"]
+          usuario_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "coordenador_authorizations_authorized_by_admin_usuario_id_fkey"
+            columns: ["authorized_by_admin_usuario_id"]
+            isOneToOne: false
+            referencedRelation: "usuarios"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "coordenador_authorizations_usuario_id_fkey"
+            columns: ["usuario_id"]
+            isOneToOne: true
+            referencedRelation: "usuarios"
             referencedColumns: ["id"]
           },
         ]
@@ -453,9 +531,30 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      autorizar_coordenador: {
+        Args: { p_email: string; p_nome?: string | null }
+        Returns: {
+          id: string
+          email: string
+          nome: string | null
+          status: Database["public"]["Enums"]["coordenador_authorization_status"]
+        }[]
+      }
+      criar_igreja_local: {
+        Args: { p_nome: string }
+        Returns: { id: string; nome: string }[]
+      }
+      current_usuario: {
+        Args: Record<PropertyKey, never>
+        Returns: Database["public"]["Tables"]["usuarios"]["Row"]
+      }
+      current_usuario_is_admin: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
     }
     Enums: {
+      coordenador_authorization_status: "active" | "revoked"
       convite_papel: "lider"
       convite_status: "pending" | "accepted" | "revoked"
       edicao_papel: "lider"
@@ -589,6 +688,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      coordenador_authorization_status: ["active", "revoked"],
       convite_papel: ["lider"],
       convite_status: ["pending", "accepted", "revoked"],
       edicao_papel: ["lider"],

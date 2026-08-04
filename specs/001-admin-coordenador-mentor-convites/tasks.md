@@ -5,9 +5,17 @@
 **Tests**: Required for database/RLS/role-boundary behavior. UI tests may be added where a test harness exists; otherwise include manual quickstart validation evidence.  
 **Organization**: Tasks are grouped by independently testable user story and suitable for later `speckit-taskstoissues` conversion.
 
+## Implementation slice status
+
+First Admin-created/authorized Coordenador slice (`fm/hayah-admin-coordenador-impl-j10`):
+
+- Completed: T001, T002, T003, T014, T015, T016, T017.
+- Partially completed for US1 only: T004 and T006 via `supabase/migrations/20260804071000_admin_coordenador_authorization.sql` (Admin authorization tables/RLS/RPC and authorized Coordenador Igreja Local creation RPC). Mentor, Lider Convites, Mentor-Equipe assignment, Fechamento, and Ranking database work remain open.
+- T012 and T013 remain open because this repo has no committed automated Supabase SQL/RLS test harness yet; `quickstart.md` now documents the manual backend validation steps for this slice.
+
 ## Phase 1: Setup and documentation alignment
 
-**Purpose**: Ensure future implementation starts from accepted domain decisions.
+**Purpose**: Ensure implementation slices stay aligned with accepted domain decisions.
 
 - [ ] T001 [P] Review `CONTEXT.md`, `docs/modelo-minimo.md`, `docs/adr/0003-admin-mentor-convites.md`, `progress.md`, and this spec directory for consistency before product implementation.
 - [ ] T002 [P] Add any missing feature tracker references for implementation work in `features.json` if the branch or issue plan changes.

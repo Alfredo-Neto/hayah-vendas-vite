@@ -2,6 +2,7 @@ import { createRootRoute, createRoute, createRouter, Navigate, RouterProvider } 
 import { PageCard } from '@/components/PageCard';
 import { useAuthSessionSubscription, useSessionQuery } from '@/features/auth/authQueries';
 import { AppLayout } from './AppLayout';
+import { AdminPage } from '../pages/AdminPage';
 import { AuthPage } from '../pages/AuthPage';
 import { ConviteAceitePage } from '../pages/ConviteAceitePage';
 import { ConvitesPage } from '../pages/ConvitesPage';
@@ -66,6 +67,12 @@ const dashboardRoute = createRoute({
   component: DashboardPage,
 });
 
+const adminRoute = createRoute({
+  getParentRoute: () => appRoute,
+  path: '/admin',
+  component: AdminPage,
+});
+
 const igrejaLocalRoute = createRoute({
   getParentRoute: () => appRoute,
   path: '/igreja-local',
@@ -108,6 +115,7 @@ const routeTree = rootRoute.addChildren([
   appRoute.addChildren([
     indexRoute,
     dashboardRoute,
+    adminRoute,
     igrejaLocalRoute,
     edicoesRoute,
     equipesRoute,
