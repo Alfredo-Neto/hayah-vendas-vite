@@ -50,6 +50,7 @@ Use the existing approved `.env.local` development configuration; do not print i
 5. Create an Igreja Local with a unique valid name and confirm the success message still appears.
 6. Click `Sair`; the app should disable the logout button while signing out, clear the Supabase session, and return to `/auth`.
 7. After logout, revisit a protected route and confirm it redirects back to `/auth`.
+8. Regression check for stale local Supabase state: with the Vite dev server running and the approved `.env.local` loaded into the shell without printing values, run `APP_URL=http://127.0.0.1:<port> node scripts/check-route-protection.mjs`; it injects an invalid local Supabase session in a disposable Chrome profile and must still land on `/auth`, not Dashboard.
 
 ## Next
 

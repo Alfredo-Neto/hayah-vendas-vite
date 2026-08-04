@@ -14,7 +14,20 @@ export function useSessionQuery() {
         throw error;
       }
 
-      return data.session;
+      if (!data.session) {
+        return null;
+      }
+
+      const { data: userData, error: userError } = await supabase.auth.getUser();
+
+      if (userError || !userData.user) {
+        return null;
+      }
+
+      return {
+        ...data.session,
+        user: userData.user,
+      };
     },
   });
 }
@@ -23,8 +36,12 @@ export function useAuthSessionSubscription() {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    const { data } = supabase.auth.onAuthStateChange((_event, session) => {
-      queryClient.setQueryData(authSessionQueryKey, session);
+    const { data } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'SIGNED_OUT') {
+        queryClient.setQueryData(authSessionQueryKey, null);
+        return;
+      }
+
       void queryClient.invalidateQueries({ queryKey: authSessionQueryKey });
     });
 
