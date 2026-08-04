@@ -65,7 +65,11 @@ npm run typecheck -- --pretty false
 npm run build
 ```
 
-If Supabase rules changed, also run the repo-approved SQL/RLS verification commands documented by that task.
+If Supabase rules changed, also run the repo-approved SQL/RLS verification commands documented by that task. For the focused Coordenador guard slice, run the static boundary check:
+
+```bash
+npm run verify:coordenador-guards
+```
 
 ## Current implementation slice validation (Admin -> Coordenador)
 
@@ -76,7 +80,7 @@ npm run typecheck -- --pretty false
 npm run build
 ```
 
-Manual database/application validation after applying `supabase/migrations/20260804071000_admin_coordenador_authorization.sql` to an approved development Supabase environment:
+Manual database/application validation after applying pending Supabase migrations through the Coordenador access guards migration to an approved development Supabase environment:
 
 1. Bootstrap the first Admin by inserting one row in `public.admin_authorizations` with the Admin's email, using an approved privileged database path. Do not commit or print secrets.
 2. Sign in as that Admin and open `/admin`.

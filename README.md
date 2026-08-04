@@ -8,7 +8,7 @@ Construir primeiro a bala traçadora descrita em `docs/modelo-minimo.md`.
 
 O fluxo da bala tracadora começa com Admin criando ou autorizando Coordenador, Coordenador criando Convites para Mentor e Lider, Mentor acompanhando Equipes e Lideres, Fechamento da Equipe pelo Lider, validacao pelo Coordenador, e Ranking baseado em Fechamentos validados.
 
-O primeiro slice implementado permite que um Admin autorize um Coordenador em `/admin`; esse Coordenador cria uma Igreja Local por meio do RPC `criar_igreja_local`.
+O primeiro slice implementado permite que um Admin autorize um Coordenador em `/admin`; Usuarios ainda nao autorizados veem acesso pendente, e apenas Coordenadores autorizados criam uma Igreja Local por meio do RPC `criar_igreja_local`.
 
 ## Rodando
 

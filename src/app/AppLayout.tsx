@@ -17,19 +17,22 @@ import { HayahBrand } from '@/components/HayahBrand';
 import { UserAvatar } from '@/components/UserAvatar';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { cn } from '@/lib/utils';
+import { canOperateAsCoordenador, useUserAccessQuery } from '@/features/access/userAccess';
 import { useSignOutMutation } from '@/features/auth/authMutations';
 import { useSessionQuery } from '@/features/auth/authQueries';
 
 const navItems = [
-  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/admin', label: 'Admin', icon: ShieldCheck },
-  { href: '/igreja-local', label: 'Igreja Local', icon: Building2 },
-  { href: '/edicoes', label: 'Edições', icon: CalendarDays },
-  { href: '/equipes', label: 'Equipes', icon: Users },
-  { href: '/convites', label: 'Convites', icon: Mail },
-  { href: '/vendas', label: 'Vendas', icon: Receipt },
-  { href: '/ranking', label: 'Ranking', icon: Trophy },
-];
+  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, visibleFor: 'authenticated' },
+  { href: '/admin', label: 'Admin', icon: ShieldCheck, visibleFor: 'admin' },
+  { href: '/igreja-local', label: 'Igreja Local', icon: Building2, visibleFor: 'coordenador' },
+  { href: '/edicoes', label: 'Edições', icon: CalendarDays, visibleFor: 'coordenador' },
+  { href: '/equipes', label: 'Equipes', icon: Users, visibleFor: 'coordenador' },
+  { href: '/convites', label: 'Convites', icon: Mail, visibleFor: 'coordenador' },
+  { href: '/vendas', label: 'Vendas', icon: Receipt, visibleFor: 'coordenador' },
+  { href: '/ranking', label: 'Ranking', icon: Trophy, visibleFor: 'coordenador' },
+] as const;
+
+type NavItem = (typeof navItems)[number];
 
 function getDisplayName(email: string | undefined) {
   if (!email) return 'Coordenador';
@@ -38,14 +41,15 @@ function getDisplayName(email: string | undefined) {
 }
 
 type SidebarNavProps = {
+  items: readonly NavItem[];
   pathname: string;
   onNavigate?: () => void;
 };
 
-function SidebarNav({ pathname, onNavigate }: SidebarNavProps) {
+function SidebarNav({ items, pathname, onNavigate }: SidebarNavProps) {
   return (
     <nav className="flex flex-1 flex-col gap-0.5 px-3">
-      {navItems.map((item) => {
+      {items.map((item) => {
         const Icon = item.icon;
         const isActive = pathname === item.href;
 
@@ -108,6 +112,7 @@ export function AppLayout() {
   const navigate = useNavigate();
   const session = useSessionQuery();
   const signOut = useSignOutMutation();
+  const access = useUserAccessQuery();
   const email = session.data?.user?.email;
   const displayName = getDisplayName(email);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -133,6 +138,12 @@ export function AppLayout() {
   }
 
   const signOutErrorMessage = signOut.error instanceof Error ? signOut.error.message : 'Não foi possível sair. Tente novamente.';
+  const canSeeCoordenadorNav = canOperateAsCoordenador(access.data);
+  const visibleNavItems = navItems.filter((item) => {
+    if (item.visibleFor === 'admin') return Boolean(access.data?.is_admin);
+    if (item.visibleFor === 'coordenador') return canSeeCoordenadorNav;
+    return true;
+  });
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -141,7 +152,7 @@ export function AppLayout() {
           <HayahBrand />
         </div>
 
-        <SidebarNav pathname={pathname} />
+        <SidebarNav items={visibleNavItems} pathname={pathname} />
 
         <SidebarFooter displayName={displayName} email={email} onSignOut={handleSignOut} isSigningOut={signOut.isPending} />
       </aside>
@@ -196,7 +207,7 @@ export function AppLayout() {
               </div>
 
               <div className="flex flex-1 flex-col overflow-y-auto py-3">
-                <SidebarNav pathname={pathname} onNavigate={() => setMobileMenuOpen(false)} />
+                <SidebarNav items={visibleNavItems} pathname={pathname} onNavigate={() => setMobileMenuOpen(false)} />
               </div>
 
               <SidebarFooter displayName={displayName} email={email} onSignOut={handleSignOut} isSigningOut={signOut.isPending} />
