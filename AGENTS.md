@@ -12,7 +12,7 @@ Read these files before changing product behavior:
 
 Working rules:
 
-- Keep the tracer bullet first: Coordenador -> Igreja Local -> Edicao -> Equipe -> Convite de Lider -> Fechamento da Equipe -> Validacao -> Ranking.
+- Keep the tracer bullet first: Admin creates or authorizes Coordenador -> Coordenador chooses country during onboarding -> Coordenador creates Igreja Local, Edicao, and Equipe -> Coordenador invites Mentor and Lider -> Mentor accompanies one or more Equipes without owning Fechamento details -> Lider owns Fechamento da Equipe -> Coordenador validates -> Ranking uses validated Fechamentos.
 - Prefer TypeScript/React for product flow and Supabase for auth, persistence, constraints, and RLS.
 - Use shadcn/ui components for application surfaces when practical.
 - Do not introduce Next, Clerk, or a heavy SaaS boilerplate without a new ADR.
