@@ -56,6 +56,13 @@
       "name": "Validated fechamento ranking model",
       "status": "planned",
       "commit": null
+    },
+    {
+      "id": "0008",
+      "name": "Admin Coordenador and Mentor Convites",
+      "status": "specified",
+      "spec": "specs/001-admin-coordenador-mentor-convites/",
+      "commit": null
     }
   ]
 }
