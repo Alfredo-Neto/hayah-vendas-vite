@@ -4,25 +4,29 @@ Este documento registra o modelo minimo para reconstruir o produto com React, Vi
 
 ## Bala Tracadora
 
-1. Coordenador entra no sistema.
-2. Coordenador cria uma Igreja Local.
-3. Coordenador cria uma Edicao.
-4. Coordenador cria uma Equipe.
-5. Coordenador cria um Convite de Lider para a Equipe.
-6. Lider aceita o Convite.
-7. Lider envia o Fechamento da Equipe.
-8. Coordenador valida o Fechamento.
-9. Coordenador ve um Ranking da Edicao por Equipe.
+1. Admin cria ou autoriza um Coordenador.
+2. Coordenador entra no sistema e escolhe seu pais de operacao no onboarding.
+3. Coordenador cria uma Igreja Local dentro do seu pais de operacao.
+4. Coordenador cria uma Edicao.
+5. Coordenador cria uma Equipe.
+6. Coordenador cria Convites de Mentor e/ou Lider para a Edicao/Equipe.
+7. Mentor ou Lider aceita o Convite.
+8. Lider envia o Fechamento da Equipe.
+9. Coordenador valida o Fechamento.
+10. Coordenador ve um Ranking da Edicao por Equipe.
 
 ## Vocabulario Canonico
 
 - Igreja Local: limite administrativo principal.
 - Usuario: pessoa autenticada que participa de uma Igreja Local.
-- Coordenador: Usuario que administra uma Igreja Local.
+- Admin: operador do produto que cria ou autoriza Coordenadores.
+- Coordenador: Usuario autorizado que administra uma Igreja Local dentro do seu pais de operacao.
+- Pais de Operacao: pais escolhido pelo Coordenador no onboarding e usado como escopo administrativo.
 - Edicao: campanha de vendas dentro de uma Igreja Local.
 - Equipe: grupo dentro de uma Edicao, sob responsabilidade de um Lider.
+- Mentor: Usuario atribuido a acompanhar uma ou mais Equipes em uma Edicao e supervisionar Lideres, sem assumir Fechamento da Equipe.
 - Lider: Usuario atribuido a uma Equipe dentro de uma Edicao.
-- Convite: permissao para um Usuario entrar em uma Igreja Local e assumir um papel/atribuicao.
+- Convite: permissao para um Usuario entrar em uma Igreja Local e assumir um papel/atribuicao, incluindo Mentor ou Lider.
 - Fechamento da Equipe: comprovacao de valor ja repassado pelo Lider para a Igreja Local.
 - Comprovante de Transferencia: evidencia anexada pelo Lider para o Coordenador conferir o repasse.
 - Ranking: comparacao das Equipes usando apenas valores repassados em Fechamentos validados pelo Coordenador.
@@ -67,7 +71,7 @@ Representa o vinculo entre Usuario e Igreja Local.
 - `id`.
 - `igreja_local_id`.
 - `usuario_id`.
-- `papel`: `coordenador` ou `usuario`.
+- `papel`: `coordenador`, `mentor`, `lider` ou `usuario`, conforme a relacao do Usuario com a Igreja Local.
 - `criado_em`.
 - `atualizado_em`.
 
@@ -75,6 +79,8 @@ Regras:
 
 - O mesmo Usuario nao pode aparecer duas vezes na mesma Igreja Local.
 - Na primeira versao, um Usuario nao pode ser Coordenador de duas Igrejas Locais.
+- Coordenador deve ter sido criado ou autorizado por um Admin antes de administrar uma Igreja Local.
+- Coordenador administra Igrejas Locais apenas dentro do seu pais de operacao.
 
 ### edicoes
 
@@ -115,7 +121,7 @@ Representa o convite de entrada em uma Igreja Local e atribuicao operacional.
 - `igreja_local_id`.
 - `edicao_id`.
 - `equipe_id`.
-- `papel`: inicialmente `lider`.
+- `papel`: `mentor` ou `lider`.
 - `code`.
 - `invited_email`.
 - `status`: `pending`, `accepted`, `revoked`.
@@ -128,6 +134,7 @@ Regras:
 
 - Convite com `invited_email` so pode ser aceito por usuario autenticado com o mesmo email.
 - Convite aceito coloca o Usuario na Igreja Local e na atribuicao indicada pelo Convite.
+- Convite de Mentor vincula o Usuario como Mentor da Edicao; Convite de Lider vincula o Usuario a uma Equipe.
 
 ### edicao_assignments
 
@@ -138,12 +145,14 @@ Representa o papel operacional do Usuario dentro de uma Edicao.
 - `edicao_id`.
 - `equipe_id`.
 - `usuario_id`.
-- `papel`: inicialmente `lider`.
+- `papel`: `mentor` ou `lider`.
 - `criado_em`.
 
 Regras:
 
 - Na primeira bala, um Lider pertence a exatamente uma Equipe dentro da Edicao.
+- Um Mentor pode acompanhar uma ou mais Equipes dentro da mesma Edicao.
+- Mentor supervisiona Lideres, mas nao envia, consolida, valida ou possui detalhes de Fechamento da Equipe.
 
 ### fechamentos_equipe
 

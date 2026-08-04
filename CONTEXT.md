@@ -10,9 +10,17 @@ Avoid: organization, empresa, conta.
 A person authenticated through Supabase Auth and represented in the Hayah domain by `usuarios`.
 Avoid: account.
 
+**Admin**
+A product operator who creates or authorizes Coordenadores before they administer Igrejas Locais. Admin is not a substitute name for Coordenador and does not own the Igreja Local tracer-bullet work.
+Avoid: using admin to mean Coordenador.
+
 **Coordenador**
-A Usuario who administers one Igreja Local. In the first version, a Usuario can coordinate only one Igreja Local.
+A Usuario authorized by an Admin who administers one Igreja Local within their country of origin/operation. In the first version, a Usuario can coordinate only one Igreja Local.
 Avoid: admin global.
+
+**Pais de Operacao**
+The country selected by the Coordenador during onboarding and used as their allowed operational scope for Igrejas Locais.
+Avoid: unscoped global coordinator.
 
 **Edicao**
 A time-boxed sales campaign inside one Igreja Local. Equipes, roles, Fechamentos da Equipe, and Ranking belong to an Edicao.
@@ -30,10 +38,10 @@ Avoid: coordenador.
 A Usuario who belongs to one Equipe in an Edicao and records their own Vendas. Out of scope for the first tracer bullet.
 
 **Mentor**
-A Usuario who supervises one or more Equipes in an Edicao. Out of scope for the first tracer bullet.
+A formal Usuario type/papel who accompanies one or more Equipes in an Edicao and supervises Lideres. Mentor does not consolidate Fechamento da Equipe details, does not own Valor Repassado or Comprovante de Transferencia, and does not validate Fechamentos.
 
 **Convite**
-A request for a Usuario to join an existing Igreja Local and assignment. Accepting a Convite never creates a new Igreja Local.
+A request for a Usuario to join an existing Igreja Local and assignment, including Mentor or Lider assignments. Accepting a Convite never creates a new Igreja Local.
 Avoid: generic signup link.
 
 **Venda**
