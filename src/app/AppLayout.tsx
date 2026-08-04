@@ -14,6 +14,7 @@ import {
 import { useEffect, useState } from 'react';
 import { HayahBrand } from '@/components/HayahBrand';
 import { UserAvatar } from '@/components/UserAvatar';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { cn } from '@/lib/utils';
 import { useSignOutMutation } from '@/features/auth/authMutations';
 import { useSessionQuery } from '@/features/auth/authQueries';
@@ -123,11 +124,13 @@ export function AppLayout() {
   function handleSignOut() {
     setMobileMenuOpen(false);
     signOut.mutate(undefined, {
-      onSettled: () => {
+      onSuccess: () => {
         void navigate({ to: '/auth', replace: true });
       },
     });
   }
+
+  const signOutErrorMessage = signOut.error instanceof Error ? signOut.error.message : 'Não foi possível sair. Tente novamente.';
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -200,6 +203,11 @@ export function AppLayout() {
         ) : null}
 
         <main className="flex-1 px-6 py-8 lg:px-10">
+          {signOut.isError ? (
+            <Alert variant="destructive" className="mb-6">
+              <AlertDescription>{signOutErrorMessage}</AlertDescription>
+            </Alert>
+          ) : null}
           <Outlet />
         </main>
 

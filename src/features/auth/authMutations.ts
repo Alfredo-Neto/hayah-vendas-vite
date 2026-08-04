@@ -64,7 +64,7 @@ export function useSignOutMutation() {
         throw error;
       }
     },
-    onSettled: () => {
+    onSuccess: () => {
       queryClient.setQueryData(authSessionQueryKey, null);
       void queryClient.invalidateQueries({ queryKey: authSessionQueryKey });
     },
