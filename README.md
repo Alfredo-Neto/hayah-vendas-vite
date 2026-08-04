@@ -4,16 +4,9 @@ Scaffold limpo para reconstruir Hayah Vendas com React, Vite e Supabase.
 
 ## Objetivo
 
-Construir primeiro a bala traçadora:
+Construir primeiro a bala traçadora descrita em `docs/modelo-minimo.md`.
 
-1. Coordenador cria acesso ou faz login.
-2. Coordenador cria uma Igreja Local.
-3. Coordenador cria uma Edição.
-4. Coordenador cria uma Equipe.
-5. Coordenador gera um Convite de Líder.
-6. Líder aceita o Convite.
-7. Líder envia o Fechamento da Equipe.
-8. Coordenador valida o Fechamento e vê o Ranking da Edição por Equipe.
+O fluxo atual começa com Admin criando ou autorizando Coordenador, Coordenador criando Convites para Mentor e Líder, Mentor acompanhando Equipes e Líderes, Fechamento da Equipe pelo Líder, validação pelo Coordenador, e Ranking baseado em Fechamentos validados.
 
 ## Rodando
 
@@ -34,10 +27,8 @@ VITE_SUPABASE_ANON_KEY=
 
 - `src/app`: router e layout.
 - `src/lib`: Supabase client e env.
-- `src/pages`: páginas da bala traçadora.
+- `src/pages`: páginas vazias da bala traçadora.
 
 ## Próximo passo de modelagem
 
-Antes de codar a regra, responder:
-
-Quando um Líder aceita um Convite, quais linhas precisam existir no banco para provar que ele pertence à Igreja Local, lidera uma Equipe naquela Edição e pode enviar Fechamentos apenas ali?
+Seguir os artefatos em `specs/001-admin-coordenador-mentor-convites/` antes de implementar Admin, autorização de Coordenador, Mentor, Convites, acompanhamento de Equipes, Fechamento, validação e Ranking.
