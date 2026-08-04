@@ -53,5 +53,59 @@ begin
 end;
 $$;
 
+create or replace function public.current_usuario_can_operate_igreja_local(p_igreja_local_id uuid)
+returns boolean
+language sql
+security definer
+set search_path = public, auth
+as $$
+  select exists (
+    select 1
+    from public.usuarios usuario
+    join public.coordenador_authorizations autorizacao
+      on autorizacao.status = 'active'
+      and (
+        autorizacao.usuario_id = usuario.id
+        or (
+          autorizacao.usuario_id is null
+          and lower(autorizacao.email) = lower(usuario.email)
+        )
+      )
+    join public.igreja_local_membros membro
+      on membro.usuario_id = usuario.id
+      and membro.papel = 'coordenador'
+      and membro.igreja_local_id = p_igreja_local_id
+    where p_igreja_local_id is not null
+      and usuario.auth_user_id = auth.uid()
+  );
+$$;
+
+alter table public.edicoes enable row level security;
+alter table public.equipes enable row level security;
+alter table public.convites enable row level security;
+alter table public.fechamentos_equipe enable row level security;
+
+create policy edicoes_operate_coordenador_authorized on public.edicoes
+  for all to authenticated
+  using (public.current_usuario_can_operate_igreja_local(igreja_local_id))
+  with check (public.current_usuario_can_operate_igreja_local(igreja_local_id));
+
+create policy equipes_operate_coordenador_authorized on public.equipes
+  for all to authenticated
+  using (public.current_usuario_can_operate_igreja_local(igreja_local_id))
+  with check (public.current_usuario_can_operate_igreja_local(igreja_local_id));
+
+create policy convites_operate_coordenador_authorized on public.convites
+  for all to authenticated
+  using (public.current_usuario_can_operate_igreja_local(igreja_local_id))
+  with check (public.current_usuario_can_operate_igreja_local(igreja_local_id));
+
+create policy fechamentos_equipe_operate_coordenador_authorized on public.fechamentos_equipe
+  for all to authenticated
+  using (public.current_usuario_can_operate_igreja_local(igreja_local_id))
+  with check (public.current_usuario_can_operate_igreja_local(igreja_local_id));
+
 revoke all on function public.current_usuario_access() from public;
+revoke all on function public.current_usuario_can_operate_igreja_local(uuid) from public;
 grant execute on function public.current_usuario_access() to authenticated;
+grant execute on function public.current_usuario_can_operate_igreja_local(uuid) to authenticated;
