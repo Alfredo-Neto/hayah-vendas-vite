@@ -32,7 +32,7 @@ The first delivery path is the tracer bullet:
 - `/auth` uses email/password sign-up and sign-in through Supabase Auth.
 - App navigation uses TanStack Router.
 - `/auth` form uses React Hook Form and Zod validation.
-- Authenticated app routes are protected, `/auth` redirects authenticated Usuarios to `/igreja-local`, and logout signs out through Supabase before returning to `/auth`.
+- Authenticated app routes are protected, `/auth` redirects authenticated Usuarios to `/dashboard`, and logout signs out through Supabase before returning to `/auth`.
 - `/admin` provides the minimal Admin UI for authorizing Coordenador access through `autorizar_coordenador`.
 - Authenticated non-authorized Usuarios see an access-pending state instead of Coordenador operational routes; Admin and Coordenador navigation is based on `current_usuario_access`.
 - Domain direction updated: Ranking should use validated valor repassado with transfer proof, not raw individual Vendas or declared lucro.
@@ -40,7 +40,7 @@ The first delivery path is the tracer bullet:
 
 ## In Progress
 
-- Test Admin-authorized Coordenador + Igreja Local manually after applying the Admin authorization migration in an approved Supabase environment.
+- Test Admin-authorized Coordenador + Igreja Local manually after applying pending Supabase migrations in an approved environment.
 - Model Fechamento da Equipe with valor repassado and comprovante de transferencia.
 - Continue remaining Spec Kit implementation in `specs/001-admin-coordenador-mentor-convites/` after the first Admin Coordenador slice.
 
@@ -50,12 +50,13 @@ Use the existing approved `.env.local` development configuration; do not print i
 
 1. Run `npm run dev`.
 2. In a fresh/anonymous browser session, visit `/dashboard`, `/admin`, `/igreja-local`, `/edicoes`, `/equipes`, `/convites`, `/vendas`, and `/ranking`; each protected route should show only the auth loading state briefly, then redirect to `/auth`.
-3. Create access or sign in at `/auth`; successful authenticated access should land on `/igreja-local`.
-4. While authenticated, visit `/auth`; it should redirect to `/igreja-local` instead of showing the auth form.
-5. With an Admin-authorized Coordenador account, create an Igreja Local with a unique valid name and confirm the success message still appears.
-6. Click `Sair`; the app should disable the logout button while signing out, clear the Supabase session, and return to `/auth`.
-7. After logout, revisit a protected route and confirm it redirects back to `/auth`.
-8. Regression check for stale local Supabase state: with the Vite dev server running and the approved `.env.local` loaded into the shell without printing values, run `APP_URL=http://127.0.0.1:<port> node scripts/check-route-protection.mjs`; it injects an invalid local Supabase session in a disposable Chrome profile and must still land on `/auth`, not Dashboard.
+3. Create access or sign in at `/auth`; successful authenticated access should land on `/dashboard`.
+4. While authenticated, visit `/auth`; it should redirect to `/dashboard` instead of showing the auth form.
+5. With a non-authorized Usuario, confirm `/dashboard` shows access pending and Coordenador operational routes do not show working forms.
+6. With an Admin-authorized Coordenador account, create an Igreja Local with a unique valid name and confirm the success message still appears.
+7. Click `Sair`; the app should disable the logout button while signing out, clear the Supabase session, and return to `/auth`.
+8. After logout, revisit a protected route and confirm it redirects back to `/auth`.
+9. Regression check for stale local Supabase state: with the Vite dev server running and the approved `.env.local` loaded into the shell without printing values, run `APP_URL=http://127.0.0.1:<port> node scripts/check-route-protection.mjs`; it injects an invalid local Supabase session in a disposable Chrome profile and must still land on `/auth`, not Dashboard.
 
 ## Next
 
