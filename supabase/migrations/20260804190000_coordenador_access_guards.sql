@@ -83,6 +83,7 @@ $$;
 alter table public.edicoes enable row level security;
 alter table public.equipes enable row level security;
 alter table public.convites enable row level security;
+alter table public.edicao_assignments enable row level security;
 alter table public.fechamentos_equipe enable row level security;
 
 create policy edicoes_operate_coordenador_authorized on public.edicoes
@@ -96,6 +97,11 @@ create policy equipes_operate_coordenador_authorized on public.equipes
   with check (public.current_usuario_can_operate_igreja_local(igreja_local_id));
 
 create policy convites_operate_coordenador_authorized on public.convites
+  for all to authenticated
+  using (public.current_usuario_can_operate_igreja_local(igreja_local_id))
+  with check (public.current_usuario_can_operate_igreja_local(igreja_local_id));
+
+create policy edicao_assignments_operate_coordenador_authorized on public.edicao_assignments
   for all to authenticated
   using (public.current_usuario_can_operate_igreja_local(igreja_local_id))
   with check (public.current_usuario_can_operate_igreja_local(igreja_local_id));
