@@ -55,6 +55,7 @@ Representa a Igreja Local administrada pelo Coordenador.
 
 - `id`.
 - `nome`.
+- `pais_operacao`.
 - `criado_por_usuario_id`.
 - `criado_em`.
 - `atualizado_em`.
@@ -63,6 +64,7 @@ Regras da primeira versao:
 
 - Nome nao pode ser vazio.
 - Nome nao pode repetir, por simplicidade inicial.
+- `pais_operacao` deve ser preenchido com o pais de operacao do Coordenador autorizado.
 
 ### igreja_local_membros
 
@@ -190,11 +192,12 @@ Regras futuras:
 
 ## Operacoes Criticas
 
-### criar_igreja_local(nome_igreja)
+### criar_igreja_local(nome_igreja, pais_operacao)
 
 Entrada do React:
 
 - `nome_igreja`.
+- `pais_operacao`.
 
 Identidade:
 
@@ -203,11 +206,14 @@ Identidade:
 Mudancas em transacao:
 
 1. Criar/atualizar `usuarios`.
-2. Bloquear se o Usuario ja for Coordenador de alguma Igreja Local.
-3. Bloquear se ja existir Igreja Local com mesmo nome.
-4. Criar `igrejas_locais`.
-5. Criar `igreja_local_membros` com `papel = coordenador`.
-6. Retornar a Igreja Local criada.
+2. Bloquear se o Usuario nao foi criado ou autorizado por um Admin para atuar como Coordenador.
+3. Bloquear se o Coordenador nao concluiu onboarding com pais de operacao.
+4. Bloquear se `pais_operacao` nao bater com o pais de operacao do Coordenador.
+5. Bloquear se o Usuario ja for Coordenador de alguma Igreja Local.
+6. Bloquear se ja existir Igreja Local com mesmo nome.
+7. Criar `igrejas_locais` com `pais_operacao` registrado.
+8. Criar `igreja_local_membros` com `papel = coordenador`.
+9. Retornar a Igreja Local criada.
 
 ### aceitar_convite_lider(code)
 
